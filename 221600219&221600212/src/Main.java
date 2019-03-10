@@ -20,19 +20,19 @@ public class Main{
 
     // 排序打印出前几的个数
     public static int sortedPrintNum = 10;
-	
-	// 输入文件名
-	public static String inputFileName = null;
-	
-	// 输出文件名
-	public static String outputFileName = null;
-	
-	// 词组的词数
-	public static int phraseWordNum = 1;
-	
-	// 是否词频权重
-	public static boolean useWordWeight = false;
-	
+
+    // 输入文件名
+    public static String inputFileName = null;
+
+    // 输出文件名
+    public static String outputFileName = null;
+
+    // 词组的词数
+    public static int phraseWordNum = 1;
+
+    // 是否词频权重
+    public static boolean useWordWeight = false;
+
 
     /**
      * 程序入口
@@ -40,11 +40,11 @@ public class Main{
      */
     public static void main(String[] args) {
         // 初始化
-		loadArgs(args);
+        loadArgs(args);
         inputFileBytes = readFileToBytes(inputFileName);
         Lib core = new Lib(inputFileBytes);
-        
-		// 内核处理
+
+        // 内核处理
         core.preproccess();
         core.collectWord();
         core.sortWordMap();
@@ -61,44 +61,44 @@ public class Main{
         // 保存结果
         writeResult();
     }
-	
-	/**
+
+    /**
      * 功能：解析命令行参数
-	 *
-	 * 参数：String[] args 命令行参数数组
+     *
+     * 参数：String[] args 命令行参数数组
      */
     static void loadArgs(String[] args){
         if (args.length > 0 && args != null){
             for (int i = 0; i < args.length; i++){
                 switch (args[i]){
                     case "-i":
-						inputFileName = args[++i];
+                        inputFileName = args[++i];
                         break;
-					case "-o":
-						outputFileName = args[++i];
-						break;
-					case "-m":
-						phraseWordNum = Integer.valueOf(args[++i]);
-						break;
-					case "-n":
-						sortedPrintNum = Integer.valueOf(args[++i]);
-						break;
-					case "-w":
-						useWordWeight = (args[i+1].equals("1"));
-						break;
-					default:
-						break;
+                    case "-o":
+                        outputFileName = args[++i];
+                        break;
+                    case "-m":
+                        phraseWordNum = Integer.valueOf(args[++i]);
+                        break;
+                    case "-n":
+                        sortedPrintNum = Integer.valueOf(args[++i]);
+                        break;
+                    case "-w":
+                        useWordWeight = (args[i+1].equals("1"));
+                        break;
+                    default:
+                        break;
                 }
             }
         } else{
             System.out.println("未输入参数");
-			System.exit(1);
+            System.exit(1);
         }
-		System.out.println(inputFileName);
-		System.out.println(outputFileName);
-		System.out.println(phraseWordNum);
-		System.out.println(sortedPrintNum);
-		System.out.println(useWordWeight);
+        System.out.println(inputFileName);
+        System.out.println(outputFileName);
+        System.out.println(phraseWordNum);
+        System.out.println(sortedPrintNum);
+        System.out.println(useWordWeight);
     }
 
 
@@ -114,21 +114,21 @@ public class Main{
 
         try {
             File file = new File(fileName);
-			FileInputStream reader = new FileInputStream(file);
-			Long fileLength = file.length();
-			fileBytes = new byte[fileLength.intValue()];
-			reader.read(fileBytes);
-			for (byte b : fileBytes){
-				System.out.print((char)b);
-				System.out.print(":");
-				System.out.print(b);
-				System.out.print("/");
-			}
-			reader.close();
+            FileInputStream reader = new FileInputStream(file);
+            Long fileLength = file.length();
+            fileBytes = new byte[fileLength.intValue()];
+            reader.read(fileBytes);
+            for (byte b : fileBytes){
+                System.out.print((char)b);
+                System.out.print(":");
+                System.out.print(b);
+                System.out.print("/");
+            }
+            reader.close();
         }
         catch(Exception e){
             System.out.println("读取文件出错");
-			System.exit(1);
+            System.exit(1);
         }
 
         return fileBytes;
@@ -175,7 +175,7 @@ public class Main{
             writter.close();
         }catch(Exception e){
             System.out.println("写入文件出错");
-			System.exit(1);
+            System.exit(1);
         }
     }
 
