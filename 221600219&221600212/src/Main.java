@@ -2,7 +2,11 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 public class Main{
-
+	//文件读取结束
+	public static boolean fileEnd = false;
+	
+	//数字正则表达式
+	public static Pattern pattern = Pattern.compile("[\\d]*$");  
     // 行数
     public static int lineNum = 0;
 
@@ -53,6 +57,10 @@ public class Main{
 	
 	// 论论文摘要单词书
     public static int strAbstractNumber = 0;
+	
+	public static File file=null;
+	
+	public static BufferedReader reader=null;
     /**
      * 程序入口
      * @param args[0] 输入文件名
@@ -60,8 +68,20 @@ public class Main{
     public static void main(String[] args) {
         // 初始化
         loadArgs(args);
-		inputFileBytes = readFileToBytes(inputFileName);
-        runProgress();
+		try {
+			file = new File(inputFileName);
+			reader=new BufferedReader(new FileReader(file));
+			
+        }
+        catch(Exception e){
+            System.out.println("读取文件出错");
+            System.exit(1);
+        }
+		
+		while(!fileEnd){
+			inputFileBytes = readFileToBytes();
+			runProgress();
+		}
     }
 
     /**
@@ -113,33 +133,43 @@ public class Main{
      *
      * 返回：byte[] bytes 字节数组
      */
-    public static byte[] readFileToBytes(String fileName){
+    public static byte[] readFileToBytes(){
         byte[] fileBytes = null;
 		
         try {
-			File file = new File(fileName);
-			BufferedReader reader=new BufferedReader(new FileReader(file));
 			
-			strNumber=reader.readLine();
-			//System.out.println(strNumber);
-			strTitle=reader.readLine();
-			strTitle=strTitle.substring(6).toLowerCase();
-			//System.out.println(strTitle);
-			strAbstract=reader.readLine();
-			strAbstract=strAbstract.substring(9).toLowerCase();
-			//System.out.println(strAbstract);
-			strNumber=reader.readLine();
-			String str=strTitle+"\r\n"+strAbstract;
-			fileBytes=str.getBytes();
 			
-				// for (byte b : fileBytes){
-				//     System.out.print((char)b);
-				//     System.out.print(":");
-				//     System.out.print(b);
-				//     System.out.print("/");
-				// }
-				//reader.close();
-			
+			if(pattern.matcher(strNumber=reader.readLine()).matches()){//读序号
+				//System.out.println(strNumber);
+				strTitle=reader.readLine();//读标题
+				strTitle=strTitle.substring(6).toLowerCase();
+				//System.out.println(strTitle);
+				strAbstract=reader.readLine();//读摘要
+				strAbstract=strAbstract.substring(9).toLowerCase();
+				//System.out.println(strAbstract);
+				String str=strTitle+"\r\n"+strAbstract;
+				fileBytes=str.getBytes();
+				
+					// for (byte b : fileBytes){
+					//     System.out.print((char)b);
+					//     System.out.print(":");
+					//     System.out.print(b);
+					//     System.out.print("/");
+					// }
+					//reader.close();
+					if(reader.readLine()==null){
+						//System.out.println("aaaa");
+						fileEnd=true;
+						return fileBytes;
+					}
+					if(reader.readLine()==null){
+						fileEnd=true;
+						return fileBytes;
+					}
+			}
+			else{
+				fileEnd=true;
+			}
         }
         catch(Exception e){
             System.out.println("读取文件出错");
@@ -158,7 +188,7 @@ public class Main{
         System.out.println("lines: " + lineNum);
         int i = 0;
         for (Map.Entry<String, Integer> entry : wordList) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+            System.out.println("< "+entry.getKey()+" >" + ": " + entry.getValue());
             if (++ i >= sortedPrintNum){
                 break;
             }
@@ -175,7 +205,7 @@ public class Main{
         );
         int i = 0;
         for (Map.Entry<String, Integer> entry : wordList) {
-            resultString += String.format("%s: %d\r\n", entry.getKey(), entry.getValue());
+            resultString += String.format("< "+"%s"+" >"+": %d\r\n", entry.getKey(), entry.getValue());
             if (++ i >= sortedPrintNum){
                 break;
             }
@@ -193,7 +223,11 @@ public class Main{
             System.exit(1);
         }
     }
-	
+	/**
+     * 功能：读运行统计功能
+     *
+     * 
+     */
 	public static void runProgress(){
 		Lib core = new Lib(inputFileBytes);
 

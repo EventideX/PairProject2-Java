@@ -13,7 +13,7 @@ public class Lib{
     private static int wordNum = 0;
 
     // 单词集合：<单词, 数目>
-    private static Map<String, Integer> wordMap = null;
+    private static Map<String, Integer> wordMap  = new TreeMap<String, Integer>();;
 
     // 排序好的单词集合
     private static List<Map.Entry<String, Integer>> wordList = null;
@@ -41,7 +41,6 @@ public class Lib{
     public Lib(byte[] bytes){
         this.bytes = bytes;
         this.bytesLength = bytes.length;
-        this.wordMap = new TreeMap<String, Integer>();
     }
 
     /**
@@ -74,7 +73,13 @@ public class Lib{
             lineNum ++;
         }
     }
-	
+	/**
+     * 功能：过滤掉摘要中的非字母数字
+     *
+     * 参数：byte[] characters 摘要字符数组
+     *
+     * 返回：int 摘要单词数
+     */
 	 public static int filterAbstract(byte[] characters){
 		Main.strAbstract="";
 		int checkWordResult = -1;
@@ -96,6 +101,13 @@ public class Lib{
         }
 		return wordNum;
 	  }
+	  /**
+     * 功能：过滤掉标题中的非字母数字
+     *
+     * 参数：byte[] characters 标题字符数组
+     *
+     * 返回：int 标题单词数
+     */
 	   public static int filterTitle(byte[] characters){
 		Main.strTitle="";  
 		int checkWordResult = -1;
@@ -118,7 +130,7 @@ public class Lib{
 		return wordNum;
 	  }
     /**
-     * 功能：计算单词数、并将单词装入集合、统计个数
+     * 功能：将单词装入集合、统计个数
      */
     public static void collectWord(String[] wordArray,int mode){
 		int weight=1;
