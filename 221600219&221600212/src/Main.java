@@ -55,12 +55,13 @@ public class Main{
 	// 论文标题单词数
 	public static int strTitleNumber = 0;
 	
-	// 论论文摘要单词书
+	// 论论文摘要单词数
     public static int strAbstractNumber = 0;
 	
 	public static File file=null;
 	
 	public static BufferedReader reader=null;
+	
     /**
      * 程序入口
      * @param args[0] 输入文件名
@@ -188,7 +189,7 @@ public class Main{
         System.out.println("lines: " + lineNum);
         int i = 0;
         for (Map.Entry<String, Integer> entry : wordList) {
-            System.out.println("< "+entry.getKey()+" >" + ": " + entry.getValue());
+            System.out.println("<"+entry.getKey()+">" + ": " + entry.getValue());
             if (++ i >= sortedPrintNum){
                 break;
             }
@@ -205,7 +206,7 @@ public class Main{
         );
         int i = 0;
         for (Map.Entry<String, Integer> entry : wordList) {
-            resultString += String.format("< "+"%s"+" >"+": %d\r\n", entry.getKey(), entry.getValue());
+            resultString += String.format("<"+"%s"+">"+": %d\r\n", entry.getKey(), entry.getValue());
             if (++ i >= sortedPrintNum){
                 break;
             }
