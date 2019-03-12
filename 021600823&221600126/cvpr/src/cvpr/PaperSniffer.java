@@ -17,6 +17,7 @@ import java.util.List;
 public class PaperSniffer {
     private List<String> paperUrls = null;
     private List<PaperContent> paperContents = null;
+    private static final Object LOCK = new Object();    // multithread lock
 
     /**
      * Return a list of paper URLs.
@@ -51,15 +52,24 @@ public class PaperSniffer {
 
         for(String paperUrl : paperUrls) {
             // visit every paper's web page to grab its title and abstract
-            try {
-                Document document = Jsoup.connect(SnifferConfig.URL_BASE + paperUrl).get();
-                Element titleNode = document.select(SnifferConfig.PAPER_TITLE_QUERY).first();
-                Element abstractNode = document.select(SnifferConfig.PAPER_ABSTRACT_QUERY).first();
-                PaperContent paper = new PaperContent(titleNode.text(), abstractNode.text());
-                paperContents.add(paper);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            // create a thread for each paperUrl
+            Runnable thread = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Document document = Jsoup.connect(SnifferConfig.URL_BASE + paperUrl).get();
+                        Element titleNode = document.select(SnifferConfig.PAPER_TITLE_QUERY).first();
+                        Element abstractNode = document.select(SnifferConfig.PAPER_ABSTRACT_QUERY).first();
+                        PaperContent paper = new PaperContent(titleNode.text(), abstractNode.text());
+                        synchronized (LOCK) {
+                            paperContents.add(paper);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            thread.run();
         }
 
         return paperContents;
