@@ -37,7 +37,7 @@ public class Lib{
 
     /**
      * 初始化构造
-    **/
+     */
     public Lib(byte[] bytes){
         this.bytes = bytes;
         this.bytesLength = bytes.length;
@@ -73,6 +73,7 @@ public class Lib{
             lineNum ++;
         }
     }
+	
 	/**
      * 功能：过滤掉摘要中的非字母数字
      *
@@ -101,7 +102,8 @@ public class Lib{
         }
 		return wordNum;
 	  }
-	  /**
+	  
+	 /**
      * 功能：过滤掉标题中的非字母数字
      *
      * 参数：byte[] characters 标题字符数组
@@ -129,6 +131,7 @@ public class Lib{
         }
 		return wordNum;
 	  }
+	  
     /**
      * 功能：将单词装入集合、统计个数
      */
