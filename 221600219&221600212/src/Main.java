@@ -1,6 +1,10 @@
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
+
+/**
+ * java Main -i input.txt -w 1 -o output.txt
+ */
 public class Main{
 	//文件读取结束
 	public static boolean fileEnd = false;
@@ -161,10 +165,7 @@ public class Main{
 					if(reader.readLine()==null){
 						//System.out.println("aaaa");
 						fileEnd=true;
-						return fileBytes;
-					}
-					if(reader.readLine()==null){
-						fileEnd=true;
+						reader.close();
 						return fileBytes;
 					}
 			}
@@ -174,6 +175,7 @@ public class Main{
         }
         catch(Exception e){
             System.out.println("读取文件出错");
+			e.printStackTrace();
             System.exit(1);
         }
 
@@ -235,9 +237,9 @@ public class Main{
         // 内核处理
         core.preproccess();
 		strTitleNumber=core.filterTitle(strTitle.getBytes());
-		System.out.println(strTitle);
+		// System.out.println(strTitle);
 		strAbstractNumber=core.filterAbstract(strAbstract.getBytes())-strTitleNumber;
-		System.out.println(strAbstract);
+		// System.out.println(strAbstract);
         core.collectWord(strTitle.trim().split(" "),1);
 		core.collectWord(strAbstract.trim().split(" "),2);
         core.sortWordMap();
