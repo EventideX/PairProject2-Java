@@ -28,7 +28,7 @@ public class PaperSniffer {
 
         paperUrls = new LinkedList<>();
         try {
-            Document document = Jsoup.connect(SnifferConfig.START_URL).get();
+            Document document = Jsoup.connect(SnifferConfig.START_URL).maxBodySize(0).get();
             Elements linkElements = document.select(SnifferConfig.PAPER_URL_QUERY);
 
             for(Element link : linkElements)
