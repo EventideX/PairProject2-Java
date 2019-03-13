@@ -3,17 +3,20 @@ package src;
 import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class WordCount {
     private ArrayList<String> arrayList = new ArrayList<>();
     private ArrayList<String> separator = new ArrayList<>();
     private ArrayList<String> word = new ArrayList<>();
+    private ArrayList<Boolean> isLegalWord = new ArrayList<>();
     private int characterNumber = 0, lineNumber = 0, wordNumber = 0, weight = 1, deviation = 0;
     private Signal signal;
     private File inFile, outFile;
     private TreeMap<String, Integer> map = new TreeMap<>();
 
-    public WordCount(Signal s) {
+    WordCount(Signal s) {
         signal = s;
         inFile = new File(signal.getInFile());
         outFile = new File(signal.getOutFile());
@@ -22,7 +25,7 @@ public class WordCount {
         setWordNumber();
     }
 
-    public WordCount(File inFile) {
+    WordCount(File inFile) {
         signal = new Signal(new String[]{});
         this.inFile = inFile;
         this.outFile = null;
@@ -39,7 +42,7 @@ public class WordCount {
         int ch;
         try (FileReader fr = new FileReader(inFile)) {
             while ((ch = fr.read()) != -1) {
-                if(ch != 13){
+                if (ch != 13) {
                     characterNumber++;
                 }
             }
@@ -56,7 +59,7 @@ public class WordCount {
         String line;
         try (BufferedReader br = new BufferedReader(new FileReader(inFile))) {
             while ((line = br.readLine()) != null) {
-                if(!line.trim().isEmpty()){
+                if (!line.trim().isEmpty()) {
                     lineNumber++;
                 }
             }
@@ -92,49 +95,51 @@ public class WordCount {
     private boolean isWord(String s) {
         return s.length() >= 4 && Character.isLetter(s.charAt(0)) && Character.isLetter(s.charAt(1)) && Character.isLetter(s.charAt(2)) && Character.isLetter(s.charAt(3));
     }
-    
+
     private void splitLine(String line) {
-        if(line.isEmpty()){
+        if (line.isEmpty()) {
             return;
         }
-        if(Character.isLetterOrDigit(line.charAt(0))) {
-        	deviation = -1;
+        if (Character.isLetterOrDigit(line.charAt(0))) {
+            deviation = -1;
+        } else {
+            deviation = 0;
         }
-        else {
-        	deviation = 0;
-        }
-        String[] str = line.split("[^a-z0-9]");
-        for (String aStr : str) {
-            if (!"".equals(aStr)) {
-                arrayList.add(aStr);
-                if (isWord(aStr)) {
-                    wordNumber += 1;
-                }
+        Pattern r = Pattern.compile("[a-z0-9]+");
+        Matcher m = r.matcher(line);
+        while (m.find()) {
+            arrayList.add(m.group(0));
+            if (isWord(m.group(0))) {
+                wordNumber += 1;
+                isLegalWord.add(true);
+            } else {
+                isLegalWord.add(false);
             }
         }
-        str = line.split("[a-z0-9]");
-        for(String aStr : str) {
-        	if(!"".equals(aStr)) {
-        		separator.add(aStr);
-        	}
+
+        Pattern r2 = Pattern.compile("[^a-z0-9]+");
+        Matcher m2 = r2.matcher(line);
+        while (m2.find()) {
+            separator.add(m2.group(0));
         }
         setMap();
         arrayList.clear();
         separator.clear();
         word.clear();
+        isLegalWord.clear();
     }
 
     private void combineWord() {
         for (int i = 0; i < arrayList.size() - signal.getmValue() + 1; i++) {
             boolean flag = true;
             for (int j = 0; j < signal.getmValue() && flag; j++) {
-                if (!isWord(arrayList.get(i + j))) {
+                if (!isLegalWord.get(i + j)) {
                     flag = false;
                 }
             }
             if (flag) {
                 StringBuilder s = new StringBuilder(arrayList.get(i));
-                for(int j = 1; j < signal.getmValue(); j++) {
+                for (int j = 1; j < signal.getmValue(); j++) {
                     s.append(separator.get(i + j + deviation)).append(arrayList.get(i + j));
                 }
                 word.add(s.toString());
@@ -161,7 +166,7 @@ public class WordCount {
         for (Entry<String, Integer> mapping : list) {
             result.append("<").append(mapping.getKey()).append(">: ").append(mapping.getValue()).append("\r\n");
             i++;
-            if (i >= signal.getnValue()){
+            if (i >= signal.getnValue()) {
                 break;
             }
         }
@@ -181,7 +186,7 @@ public class WordCount {
     }
 
     private void writeToFile() throws Exception {
-        if (outFile == null){
+        if (outFile == null) {
             throw new Exception("输出文件未定义！");
         }
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(outFile))) {
