@@ -11,6 +11,26 @@ public class Config {
     private static int wordGroupSize;
     private static int maxOutputNumber;
 
+    public static String getInputFileName() {
+        return inputFileName;
+    }
+
+    public static String getOutputFileName() {
+        return outputFileName;
+    }
+
+    public static boolean isCountWithWeight() {
+        return countWithWeight;
+    }
+
+    public static int getWordGroupSize() {
+        return wordGroupSize;
+    }
+
+    public static int getMaxOutputNumber() {
+        return maxOutputNumber;
+    }
+
     static {
         options = new Options();
         wordGroupSize = 0;
@@ -74,7 +94,7 @@ public class Config {
 
         if(commandLine.hasOption("m")) {
             try {
-                maxOutputNumber = Integer.parseInt(commandLine.getOptionValue("m"));
+                wordGroupSize = Integer.parseInt(commandLine.getOptionValue("m"));
             } catch (NumberFormatException e) {
                 throw new ParseException("the -m option only accepts a number");
             }
@@ -82,7 +102,7 @@ public class Config {
 
         if(commandLine.hasOption("n")) {
             try {
-                wordGroupSize = Integer.parseInt(commandLine.getOptionValue("n"));
+                maxOutputNumber = Integer.parseInt(commandLine.getOptionValue("n"));
             } catch (NumberFormatException e) {
                 throw new ParseException("the -n option only accepts a number");
             }
