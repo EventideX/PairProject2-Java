@@ -18,10 +18,9 @@ public class wordCount {
 	 * 输入：统计的文件字符总数、统计单词和词频的Map、统计的文件有效行数
 	 * 输出：无
 	 */
-	public static void writeToFile(int countChar, Map<String, String> wordsMap, int countLinnes,String out_name) {
+	public static void writeToFile(int countChar, Map<String, String> wordsMap, int countLinnes,String out_name,int numbers) {
 		try {
 			int countWords = Integer.parseInt(wordsMap.get("count_words"));
-			
 			File output_file = new File(out_name);
 			OutputStreamWriter writer;
 			writer = new OutputStreamWriter(new FileOutputStream(output_file));
@@ -40,8 +39,8 @@ public class wordCount {
 				return;
 			}
 
-			int n = 10;
-			while (countWords > 0 && n-- > 0) {
+			
+			while (countWords > 0 && numbers-- > 0) {
 				String temp = "";
 				int maxNum = -1;
 				Iterator<Map.Entry<String, String>> iterator = wordsMap.entrySet().iterator();
@@ -60,7 +59,7 @@ public class wordCount {
 				System.out.println("<" + temp + ">: " + maxNum);
 
 				wordsMap.remove(temp);
-				countWords = countWords - maxNum;
+				//countWords = countWords - maxNum;
 			}
 
 			writer.close();
@@ -107,12 +106,12 @@ public class wordCount {
 	}
 	
 	/*
-	 * 按权重统计文件的单词(或词组)词频(0表示属于 Title、Abstract 的单词(或词组)权重相同均为 1;
-	 * 1 表示属于 Title 的单词(或词组)权重为10，属于Abstract 单词(或词组)权重为1)
-	 * 输入：初步统计的单词(或词组)和词频的Map、数字选项
+	 * 按权重统计文件的单词(或词组)词频(0表示属于 Title、Abstract 的单词(或词组)权重相同均为 1; 1 表示属于 Title
+	 * 的单词(或词组)权重为10，属于Abstract 单词(或词组)权重为1) 输入：初步统计的单词(或词组)和词频的Map、数字选项
 	 * 输出：按权重统计的单词(或词组)和词频的Map
 	 */
-	public static Map<String, String> count_Word_Frequency(String input_file_path, Map<String, String> wordsMap, boolean isWeight) {
+	public static Map<String, String> count_Word_Frequency(String input_file_path, Map<String, String> wordsMap,
+			boolean isWeight) {
 
 		try {
 			File input_file = new File(input_file_path);
@@ -122,50 +121,51 @@ public class wordCount {
 
 			if (input_file.isFile() && input_file.exists())// 判断文件是否存在
 			{
-				reader = new InputStreamReader(new FileInputStream(input_file));
-				bufferedReader = new BufferedReader(reader);
+				
+				if (wordsMap.containsKey("title"))// 如果是单词的Map
+				{
+					// 先去除wordsMap初步统计中“title: ”和“abstract: ”所占用的词频
+					reader = new InputStreamReader(new FileInputStream(input_file));
+					bufferedReader = new BufferedReader(reader);
+					while ((str = bufferedReader.readLine()) != null) {
+						str = str.toLowerCase();
+						if (str.contains("title: ")) {
+							// title的词频减一
+							int value = Integer.parseInt(wordsMap.get("title"));
+							value--;
+							wordsMap.put("title", value + "");
 
-				// 先去除wordsMap初步统计中“title: ”和“abstract: ”所占用的词频
-				while ((str = bufferedReader.readLine()) != null) {
-					str = str.toLowerCase();
-					if (str.contains("title: ")) {
-						// title的词频减一
-						int value = Integer.parseInt(wordsMap.get("title"));
-						value--;
-						wordsMap.put("title", value + "");
+							// 总单词个数减一
+							int n = Integer.parseInt(wordsMap.get("count_words"));
+							n--;
+							wordsMap.put("count_words", n + "");
+						}
+						if (str.contains("abstract: ")) {
+							// abstract的词频减一
+							int value = Integer.parseInt(wordsMap.get("abstract"));
+							value--;
+							wordsMap.put("abstract", value + "");
 
-						// 总单词个数减一
-						int n = Integer.parseInt(wordsMap.get("count_words"));
-						n--;
-						wordsMap.put("count_words", n + "");
-					}
-					if (str.contains("abstract: ")) {
-						// abstract的词频减一
-						int value = Integer.parseInt(wordsMap.get("abstract"));
-						value--;
-						wordsMap.put("abstract", value + "");
-
-						// 总单词个数减一
-						int n = Integer.parseInt(wordsMap.get("count_words"));
-						n--;
-						wordsMap.put("count_words", n + "");
+							// 总单词个数减一
+							int n = Integer.parseInt(wordsMap.get("count_words"));
+							n--;
+							wordsMap.put("count_words", n + "");
+						}
 					}
 				}
-//				if (wordsMap.get("title").equals("0"))
-//					wordsMap.remove("title");
-//				if (wordsMap.get("abstract").equals("0"))
-//					wordsMap.remove("abstract");
-				
-				
-				if (isWeight) {
+				// if (wordsMap.get("title").equals("0"))
+				// wordsMap.remove("title");
+				// if (wordsMap.get("abstract").equals("0"))
+				// wordsMap.remove("abstract");
+
+				if (!isWeight) {
 					// 权重1:1
-					reader.close();
 					return wordsMap;
-				} else if (!isWeight) {
+				} else if (isWeight) {
 					// 权重10:1
-					
+					reader = new InputStreamReader(new FileInputStream(input_file));
+					bufferedReader = new BufferedReader(reader);
 					while ((str = bufferedReader.readLine()) != null) {
-						System.out.println("hello1");
 						str = str.toLowerCase();
 						if (str.contains("title: ")) {
 							for (int i = 5; i < (str.length() - 4); i++) {
@@ -191,9 +191,8 @@ public class wordCount {
 												// 词频加9或第一次录入词频10
 												if (wordsMap.containsKey(temp)) {
 													int n = Integer.parseInt(wordsMap.get(temp));
-													n+=9;System.out.println("hello");
-													
-													wordsMap.put(temp, n + "");
+													n += 9;
+													wordsMap.put(temp, n + "");											
 												} else
 													wordsMap.put(temp, "10");
 												i = j;
@@ -210,7 +209,6 @@ public class wordCount {
 					reader.close();
 					return wordsMap;
 				} else {
-					reader.close();
 					System.out.println("命令错误！！");
 					return null;
 				}

@@ -8,9 +8,9 @@ public class Main {
 		int countChar;
 		int countLinnes;
 		int phraseLength;
-		int numbers;
+		int numbers=10;
 		/*输入与输出地址*/
-		String in_name = "input.txt";
+		String in_name = "test.txt";
 		String out_name = "result.txt";
 		for(int i=0;i<args.length;i+=2) {
 			switch(args[i]) {
@@ -25,9 +25,9 @@ public class Main {
 				case "-w":
 					/*由输入参数选择权重占比*/
 					if(Integer.parseInt(args[i+1])==0) {
-						isWeight=true;
-					}else {
 						isWeight=false;
+					}else {
+						isWeight=true;
 					}
 					break;
 				case "-m":
@@ -56,7 +56,7 @@ public class Main {
 		/*初步统计的单词(或词组)和词频的Map、数字选项*/
 		wordsFrequency=wordCount.count_Word_Frequency(in_name, wordsMap,isWeight);
 		/*输出至文件中*/
-		wordCount.writeToFile(countChar,wordsFrequency,countLinnes,out_name);
+		wordCount.writeToFile(countChar,wordsFrequency,countLinnes,out_name,numbers);
 	}
 	
 	
