@@ -15,14 +15,11 @@ public class Main {
 	
 	public static void main(String[] args) {
 		final String ROOT = "http://openaccess.thecvf.com/";
-		final String papersUrl = "CVPR2018.py";
-		final String outputFileName = "result.txt";
+		String papersUrl = "CVPR2018.py";
+		String outputFileName = "result.txt";
 		final int TIME_OUT = 5000;
-		Document doc = null;
-		String aPaperTitle = null;
-		String aPaperUrl = null;
-		String aPaperAbstract = null;
-		Document aPaperDoc = null;
+		Document doc = null, aPaperDoc = null;
+		String aPaperTitle = null, aPaperUrl = null,aPaperAbstract = null;
 		int id = 0;
 		try {
 			doc = Jsoup.connect(ROOT + papersUrl).timeout(TIME_OUT).get();
@@ -32,7 +29,9 @@ public class Main {
 				
 			// 获取所有ptitle链接
 			Elements elements = doc.getElementsByClass("ptitle");
-			for (Element e : elements) {
+			Iterator it = elements.iterator(); 
+			while(it.hasNext()) {
+				Element e = (Element)it.next();
 				aPaperTitle = e.text();
 				// 获取文章详情链接
 				aPaperUrl = e.getElementsByTag("a").first().attr("href");
@@ -43,7 +42,9 @@ public class Main {
 				Element ee = aPaperDoc.getElementById("abstract");
 				aPaperAbstract = ee.text();
 				writter.write(String.format(
-					"%d\r\nTitle: %s\r\nAbstract: %s\r\n\r\n\r\n",
+					// 控制最后一篇文章后无换行
+					"%d\r\nTitle: %s\r\nAbstract: %s" +
+					(!it.hasNext() ? "":"\r\n\r\n\r\n"),
 					id++, aPaperTitle, aPaperAbstract
 				));
 			}
