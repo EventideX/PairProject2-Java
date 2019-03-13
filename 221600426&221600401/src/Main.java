@@ -25,11 +25,13 @@ public class Main {
 	}
 }
 
+//操作指令类
 class Option{
 	static String inputFile="",outputFile="";
 	static boolean isWeight=false;
-	static int m=1,n=10;
+	static int m=1,n=10;//参数
 	
+	//获取操作指令
 	public void getOption(String[] args) {
 		if(args.length%2!=0) {
 			System.out.println("参数个数必须为偶数");
@@ -41,15 +43,14 @@ class Option{
 			}else if(args[i].charAt(1)=='o') {
 				outputFile=args[i+1];
 			}else if(args[i].charAt(1)=='w') {
-				isWeight=args[i+1].charAt(0)=='1'?true:false;
+				isWeight=Integer.parseInt(args[i+1])==1?true:false;
 			}else if(args[i].charAt(1)=='m') {
-				m=args[i+1].charAt(0)-'0';
+ 				m=Integer.parseInt(args[i+1]);
 			}else if(args[i].charAt(1)=='n') {
-				n=args[i+1].charAt(0)-'0';
+				n=Integer.parseInt(args[i+1]);
 			}
 		}
 	}
-	
 	
 }
 
@@ -64,6 +65,7 @@ class WordsHandler{
 		// TODO Auto-generated constructor stub
 	}
 	
+	//读取文件
 	public void readFile(String filename) {
 		String string;
 		BufferedReader reader;
@@ -72,18 +74,21 @@ class WordsHandler{
 			while ((string=reader.readLine())!=null) {
 				if(standard(string).equals(""))
 					continue;
-				if(string.matches("[0-9]*"))
+				if(string.matches("[0-9]*"))//去除编号
 					continue;
 				lineCnt++;
 				String newLine="";
 				if(string.contains("Title: ")) {
 					newLine=string.substring(7)+"\n";
-				}
+				}//去除行首标志
 				if(string.contains("Abstract: ")) {
-					newLine=string.substring(10);
+					newLine=string.substring(10)+"\n";
+				}//去除行首标志
+				charCnt(newLine);//字符计数
+				if(Option.m>1) {
+					wordsCnt(string);//单词组统计
 				}
-				charCnt(newLine);
-				wordCnt(string);
+				wordCnt(string);//单词统计
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -112,112 +117,141 @@ class WordsHandler{
 			arr[i]=arr[i].toLowerCase();
 	}
 	
-	//单词（词组）数统计
+	//获取单词
+	String[] getWords(String line) {
+		String arr[];
+		if(line.contains("Title: ")) {
+			line=line.substring(7);
+		}
+		if(line.contains("Abstract: ")) {
+			line=line.substring(10);
+		}
+		arr=line.split("[^a-zA-Z0-9]+");
+		tolowerCase(arr);
+		return arr;
+	}
+	
+	//获取分隔符
+	String[] getSeperator(String line) {
+		String arr[];
+		if(line.contains("Title: ")) {
+			line=line.substring(7);
+		}
+		if(line.contains("Abstract: ")) {
+			line=line.substring(10);
+		}
+		arr=line.split("[a-zA-Z0-9]+");
+		if(arr.length!=0&&!arr[0].equals(""))
+			return arr;
+		else {
+			String t[]=new String[arr.length-1];
+			for(int i=1;i<arr.length;++i)
+				t[i-1]=arr[i];
+			return t;
+		}
+		
+	}
+	
+	//单词组计数
+	public void wordsCnt(String line) {
+		if(Option.isWeight) {//启用权值
+			String letters[]=getWords(line); //分割出潜在的单词
+			String separators[]=getSeperator(line);//分割出分隔符
+			for(int i=0;i<letters.length-Option.m+1;i++) {
+				boolean find=true;
+				for(int j=i,cnt=0;cnt<Option.m;++j,cnt++) {
+					if(!letters[j].matches("[a-z]{4}[a-z0-9]*")) {//判断是否是单词
+						find=false;
+					}
+				}
+				if(find) {//找到连续的m个单词
+					String str=letters[i];
+					for(int j=i+1,cnt=0;cnt<Option.m-1;++j,cnt++) {
+						str+=separators[j-1]+letters[j];
+					}
+					if(line.contains("Title: ")) {
+						if(!wordCntMap.containsKey(str)) {
+							wordCntMap.put(str, 10);
+						}else {
+							wordCntMap.put(str, wordCntMap.get(str)+10);
+						}
+					}
+					if(line.contains("Abstract: ")) {
+						if(!wordCntMap.containsKey(str)) {
+							wordCntMap.put(str, 1);
+						}else {
+							wordCntMap.put(str, wordCntMap.get(str)+1);
+						}
+					}	
+					
+				}
+			}	
+		}
+		else {//不启用权值
+			String letters[]=getWords(line); //分割出潜在的单词
+			String separators[]=getSeperator(line);//分割出分隔符
+			for(int i=0;i<letters.length-Option.m+1;i++) {
+				boolean find=true;
+				for(int j=i,cnt=0;cnt<Option.m;++j,cnt++) {
+					if(!letters[j].matches("[a-z]{4}[a-z0-9]*")) {//判断是否是单词
+						find=false;
+					}
+				}
+				if(find) {//找到连续的m个单词
+					String str=letters[i];
+					for(int j=i+1,cnt=0;cnt<Option.m-1;++j,cnt++)
+						str+=separators[j-1]+letters[j];
+					if(!wordCntMap.containsKey(str)) {
+						wordCntMap.put(str, 1);
+					}else {
+						wordCntMap.put(str, wordCntMap.get(str)+1);
+					}
+				}
+			}
+		}	
+	}
+	
+	//单词数统计
 	public void wordCnt(String line) {
-		if(Option.m==1) {//单词统计
-			if(Option.isWeight) {//启用权值
-				if(line.contains("Title: ")) {
-					line=line.substring(7);
-					String arr[]=line.split("[^a-zA-Z0-9]"); //分割出潜在的单词
-					tolowerCase(arr);
-					for(int i=0;i<arr.length;++i) {
-						//System.out.println(arr[i]);
-						if(arr[i].matches("[a-z]{4}[a-z0-9]*")) {//判断是否是单词
-							wordCnt++;
+		if(Option.isWeight) {//启用权值
+			String arr[]=getWords(line);//分割出潜在的单词
+			for(int i=0;i<arr.length;++i) {
+				if(arr[i].matches("[a-z]{4}[a-z0-9]*")) {//判断是否是单词
+					wordCnt++;
+					if(Option.m==1) {
+						if(line.contains("Title: ")) {
 							if(!wordCntMap.containsKey(arr[i])) {
 								wordCntMap.put(arr[i], 10);
 							}else {
 								wordCntMap.put(arr[i], wordCntMap.get(arr[i])+10);
 							}
-							
 						}
-					}
-				}
-				if(line.contains("Abstract: ")) {
-					line=line.substring(10);
-					String arr[]=line.split("[^a-zA-Z0-9]"); //分割出潜在的单词
-					tolowerCase(arr);
-					for(int i=0;i<arr.length;++i) {
-						//System.out.println(arr[i]);
-						if(arr[i].matches("[a-z]{4}[a-z0-9]*")) {//判断是否是单词
-							wordCnt++;
+						if(line.contains("Abstract: ")) {
 							if(!wordCntMap.containsKey(arr[i])) {
 								wordCntMap.put(arr[i], 1);
 							}else {
 								wordCntMap.put(arr[i], wordCntMap.get(arr[i])+1);
 							}
-							
 						}
 					}
 				}
-			}else {//不启用权值
-				if(line.contains("Title: ")) {
-					line=line.substring(7)+"\n";
-				}
-				if(line.contains("Abstract: ")) {
-					line=line.substring(10);
-				}
-				
-				String arr[]=line.split("[^a-zA-Z0-9]"); //分割出潜在的单词
-				tolowerCase(arr);
-				for(int i=0;i<arr.length;++i) {
-					//System.out.println(arr[i]);
-					if(arr[i].matches("[a-z]{4}[a-z0-9]*")) {//判断是否是单词
-						wordCnt++;
+			}
+		}	
+		else {//不启用权值
+			String arr[]=getWords(line); //分割出潜在的单词
+			for(int i=0;i<arr.length;++i) {
+				if(arr[i].matches("[a-z]{4}[a-z0-9]*")) {//判断是否是单词
+					wordCnt++;
+					if(Option.m==1) {
 						if(!wordCntMap.containsKey(arr[i])) {
 							wordCntMap.put(arr[i], 1);
 						}else {
 							wordCntMap.put(arr[i], wordCntMap.get(arr[i])+1);
 						}
-						
-					}
-				}
-			}
-		}else {//词组统计
-			if(Option.isWeight) {//启用权值
-				if(line.contains("Title: ")) {
-					line=line.substring(7);
-					String arr[]=line.split("[^a-zA-Z0-9]"); //分割出潜在的单词
-					String arr2[]=new String[arr.length];//词组
-					tolowerCase(arr);
-					for(int i=0;i<arr.length;++i) {
-						//System.out.println(arr[i]);
-						if(arr[i].matches("[a-z]{4}[a-z0-9]*")) {//判断是否是单词
-							arr2[wordCnt++]=arr[i];
-						}
-					}
-				}
-				if(line.contains("Abstract: ")) {
-					line=line.substring(10);
-					String arr[]=line.split("[^a-zA-Z0-9]"); //分割出潜在的单词
-					String arr2[]=new String[arr.length];//词组
-					tolowerCase(arr);
-					for(int i=0;i<arr.length;++i) {
-						//System.out.println(arr[i]);
-						if(arr[i].matches("[a-z]{4}[a-z0-9]*")) {//判断是否是单词
-							arr2[wordCnt++]=arr[i];
-						}
-					}
-				}
-			}else {//不启用权值
-				if(line.contains("Title: ")) {
-					line=line.substring(7)+"\n";
-				}
-				if(line.contains("Abstract: ")) {
-					line=line.substring(10);
-				}	
-				String arr[]=line.split("[^a-zA-Z0-9]"); //分割出潜在的单词
-				String arr2[]=new String[arr.length];//词组
-				tolowerCase(arr);
-				for(int i=0;i<arr.length;++i) {
-					//System.out.println(arr[i]);
-					if(arr[i].matches("[a-z]{4}[a-z0-9]*")) {//判断是否是单词
-						arr2[wordCnt++]=arr[i];
 					}
 				}
 			}
 		}
-		
 	}
 	
 	//输出信息
@@ -255,9 +289,6 @@ class WordsHandler{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
 	}
 	
 }

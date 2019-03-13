@@ -36,7 +36,7 @@ public class Main {
 						public void run() {
 							// TODO Auto-generated method stub
 							try {
-								Thread.sleep(10);
+								//Thread.sleep(100);
 								Document document=Jsoup.connect("http://openaccess.thecvf.com/"+href).maxBodySize(0).timeout(1000*60*5).get();
 								handler.writeFile(document);
 							} catch (Exception e) {
@@ -65,7 +65,7 @@ class Handler{
 		try {
 			System.out.println(cnt+" "+document.getElementById("abstract").text());
 			String string=cnt+"\r\n";
-			string+="Titile: "+document.getElementById("papertitle").text()+"\r\n";
+			string+="Title: "+document.getElementById("papertitle").text()+"\r\n";
 			string+="Abstract: "+document.getElementById("abstract").text()+"\r\n\r\n\r\n";
 			writer.write(string);
 			writer.flush();
