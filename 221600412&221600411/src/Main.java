@@ -1,5 +1,3 @@
-package soft.jinjie;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -21,7 +19,7 @@ public class Main {
     public int n = 10; // Output the number of words
 
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws IOException, InterruptedException {
         Main instance = new Main();
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
@@ -51,8 +49,7 @@ public class Main {
         String str2 = lib.printWord();  // Count words
         String str3 = lib.printLines(); // Calculate number of lines
         String str4 = lib.printCountMostWord(instance.n);// Computing word frequency
-
-//        System.out.println(str1 + "\r\n" + str2 + "\r\n" + str3 + "\r\n" + str4);
+        System.out.println(str1 + "\r\n" + str2 + "\r\n" + str3 + "\r\n" + str4);
         instance.writeFile(instance.outputFileName,str1 + "\r\n" + str2 + "\r\n" + str3 + "\r\n" + str4);
     }
 

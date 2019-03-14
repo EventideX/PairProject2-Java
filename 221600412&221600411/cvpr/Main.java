@@ -1,5 +1,3 @@
-package soft.jinjie;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,7 +13,7 @@ import java.io.IOException;
  * @author: ChenYu
  * @create: 2019-03-11 19:11
  **/
-public class Crawler {
+public class Main {
 
     public static String url = "http://openaccess.thecvf.com/CVPR2018.py";
     public static String urlprifex = "http://openaccess.thecvf.com/";

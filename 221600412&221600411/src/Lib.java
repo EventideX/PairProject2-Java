@@ -1,6 +1,5 @@
-package soft.jinjie;
-
 import java.util.*;
+
 
 /**
  * @program: java8
@@ -22,7 +21,12 @@ public class Lib {
     private int n = 10;
 
     public void countChar(String content) {
-        charNum += content.replaceAll("“","").length();
+        for(int i = 0; i< content.length() ; i++){
+            int ch = content.charAt(i);
+            if(ch>=0 && ch<=127){
+                charNum++;
+            }
+        }
     }
 
     public String printChar() {
