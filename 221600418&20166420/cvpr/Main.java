@@ -1,4 +1,4 @@
-package Cvpr;
+package cvpr;
 
 import java.io.*;
 import java.net.URL;
@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Cvpr {
+public class Main {
 
     public static void main(String[] args) {
         // 加载论文类型的 CSV 表格
@@ -24,11 +24,11 @@ public class Cvpr {
         }
 
         String result = getHtmlContent("CVPR2018.py");
-        /**
+        /*
          首页HTML样式
          <dt class="ptitle"><br><a href="content_cvpr_2018/html/Das_Embodied_Question_Answering_CVPR_2018_paper.html">Embodied Question Answering</a></dt>
          */
-        /**
+        /*
          详情页HTML样式
          <div id="papertitle">title</div><div id="authors"><br><b><i>authors</i></b>; where</div><font size="5"><br><b>Abstract</b></font><br><br><div id="abstract" >abstract</div><font size="5"><br><b>Related Material</b></font><br><br>[<a href="url">pdf</a>]
          */
@@ -53,17 +53,17 @@ public class Cvpr {
                 System.out.println("Abstract: " + m2.group(4));
                 System.out.println("PDF: " + m2.group(5).replace("../../", "http://openaccess.thecvf.com/"));
                 res.append(i).append("\r\n");
-                res.append("Type: ").append(map.get(m2.group(1).split(",")[0].toLowerCase())).append("\r\n");
+//                res.append("Type: ").append(map.get(m2.group(1).split(",")[0].toLowerCase())).append("\r\n");
                 res.append("Title: ").append(m2.group(1)).append("\r\n");
-                res.append("Authors: ").append(m2.group(2)).append("\r\n");
+//                res.append("Authors: ").append(m2.group(2)).append("\r\n");
                 res.append("Abstract: ").append(m2.group(4)).append("\r\n");
-                res.append("PDF: ").append(m2.group(5).replace("../../", "http://openaccess.thecvf.com/")).append("\r\n\r\n\r\n");
+//                res.append("PDF: ").append(m2.group(5).replace("../../", "http://openaccess.thecvf.com/")).append("\r\n\r\n\r\n");
             }
             System.out.println();
             System.out.println();
             i++;
         }
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File("cvpr/result2.txt")))) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File("cvpr/result.txt")))) {
             bufferedWriter.write(String.valueOf(res));
         } catch (IOException e) {
             e.printStackTrace();
