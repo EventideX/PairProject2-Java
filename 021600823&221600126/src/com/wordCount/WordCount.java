@@ -46,15 +46,16 @@ public class WordCount {
         while ((content = br.readLine()) != null) {
             String type = "";
             if (!all) {
-                if (content.length() < 4)
-                    continue;
                 int index = counter.cutWords(content); // 调用count类的单词分割，将第一个单词分割出来
                 if (index == content.length())
                     continue;
                 type = content.toLowerCase().substring(0, counter.cutWords(content));
                 content = content.substring(index + 2); // 冒号与空格不计
+                if(!counter.isWord(type))
+                    continue;
             }
-            characters += counter.countCharacters(content, all); // 字符计数
+            characters += counter.countCharacters(content, true); // 字符计数
+
             lines += counter.countLines(content); // 有效行计数
             words += counter.countWords(content, wordMap, type); // 单词计数
         }
