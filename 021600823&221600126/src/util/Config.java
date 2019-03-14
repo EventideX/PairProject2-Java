@@ -3,7 +3,6 @@ package util;
 import org.apache.commons.cli.*;
 
 public class Config {
-    private static CommandLine commandLine;
     private static final Options options;
     private static String inputFileName;
     private static String outputFileName;
@@ -80,7 +79,7 @@ public class Config {
 
     public static void parseCommandLine(String[] args) throws ParseException {
         DefaultParser parser = new DefaultParser();
-        commandLine = parser.parse(options, args);
+        CommandLine commandLine = parser.parse(options, args);
 
         inputFileName = commandLine.getOptionValue("i");
         outputFileName = commandLine.getOptionValue("o");
