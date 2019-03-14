@@ -1,8 +1,8 @@
-import java.io.*;
 import java.util.*;
 
 public class Main {
 	public Main(){
+		try {
 		Scanner in = new Scanner(System.in);
 		String instruct = in.nextLine();
 		lib b = new lib();
@@ -45,6 +45,10 @@ public class Main {
 			}
 		}
 		b.getWord();
+		in.close();
+		} catch (NumberFormatException e) {	
+			e.printStackTrace();	
+		}
 	}
 	public static void main(String []args)
 	{

@@ -39,7 +39,7 @@ public class lib {
 	}
 	public int getFWordCount()
 	{
-		return fWordCount= map.size();
+		return fWordCount;
 	}
 	public int getFRowCount()
 	{
@@ -126,6 +126,7 @@ public class lib {
 				{
 					//System.out.print(ch[i]);
 					//新增纪录或者记录数+1
+					fWordCount ++;
 					if( map.containsKey(ch[i]) )
 						map.put(ch[i],(wValue & isTitle) ? map.get(ch[i])+10 : map.get(ch[i])+1);
 					else 
@@ -158,8 +159,6 @@ public class lib {
 						fByteCount += fContent.length();//无换行
 						setMap(fContent,false);
 					}
-						
-					
 				}
 			}
 			fis.close();
