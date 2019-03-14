@@ -27,7 +27,6 @@ public class Lib {
         for(StringBuilder line :stringList){
             if(line.indexOf(str)!=-1){
                 sum+=(line.length()-str.length());
-                System.out.print(line);
             }else{
                 sum+=line.length();
             }

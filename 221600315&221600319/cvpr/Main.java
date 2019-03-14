@@ -10,7 +10,6 @@ public class Main {
     private static final String ABSTRACT="abstract: ";
     public static void main(String args[]) throws IOException {
 
-        long start=Calendar.getInstance().getTimeInMillis();
         Map<String,String> map= Lib.getParameter(args);
 
         /* 获取参数*/
@@ -75,9 +74,6 @@ public class Main {
         }
         bf.flush();
         bf.close();
-
-        long end=Calendar.getInstance().getTimeInMillis();
-        System.out.println((end-start)/1000.0+"秒");
     }
 
 
