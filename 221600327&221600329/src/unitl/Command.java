@@ -12,6 +12,11 @@ public class Command {
         return true;  
     }  
 	
+		/**
+		 * 解析命令行参数
+		 * @param args 参数
+		 * @return CommandLine对象
+		 */
 		public CommandLine ParseCommand(String[] args) {
 			//使用CommandLine来存储相对应的命令
 			CommandLine CommandLine=new CommandLine();

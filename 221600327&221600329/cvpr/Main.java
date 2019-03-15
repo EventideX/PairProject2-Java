@@ -15,7 +15,7 @@ public class Main {
 		}
 		
 		/**
-		 * 从cvpr网站爬取论文数据，并别入result.txt
+		 * 从cvpr网站爬取论文数据，并写入result.txt
 		 * @param URL
 		 */
 	    public static void getFile(String URL) {

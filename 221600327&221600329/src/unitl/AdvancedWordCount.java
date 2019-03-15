@@ -90,17 +90,21 @@ public class AdvancedWordCount {
 				.replaceAll("Abstract: ", "|")
 				.toLowerCase()
 				.replaceAll(noLetterOrDigitalRegex, "|");
-		//按分隔符"|"，分割字符串
-		String splitStrings[] =  updateString.split("\\|");
-		
-		String regex = "^[a-z]{4}[a-z0-9]*";
 		long countOfWord = 0;
-		for(int i = 0; i < splitStrings.length; i++) {
-			if(Pattern.matches(regex, splitStrings[i])) {
+		int startPosition = 0;
+		int endPosition = 0;
+		String regex = "^[a-z]{4}[a-z0-9]*";
+		//计算到次数
+		for(int i = 0; i<updateString.length();) {
+			startPosition = i;
+			endPosition = i;
+			while(Character.isLetterOrDigit(updateString.charAt(i++))) {
+				endPosition++;
+			}
+			if(Pattern.matches(regex, updateString.substring(startPosition, endPosition))) {
 				countOfWord++;
 			}
 		}
-		
 		return countOfWord;
 	}
 
@@ -151,9 +155,11 @@ public class AdvancedWordCount {
 	}
 
 	/**
-	 * 计算加权出现次数topk的单词及其词频
+	 * 计算单词的(加权)词频和topK
 	 * @param fileName 文件名
-	 * @return Word[] 单词数组
+	 * @param topK 词频前K的单词
+	 * @param isWeight 是否启用加权计算
+	 * @return Word[] 有序单词数组
 	 */
 	public Word[] topKWordWeighting (String fileName, int topK, boolean isWeight) {
 		BufferedReader bufferedReader = null;
@@ -238,9 +244,12 @@ public class AdvancedWordCount {
 	}
 	
 	/**
-	 * 计算出现次数top10的单词组及其词频
+	 * 计算词组的(加权)词频和topK
 	 * @param fileName 文件名
-	 * @return Word[] 单词数组
+	 * @param groupNum 几个单词为一个组
+	 * @param topK 词频前K的词组
+	 * @param isWeight 是否启用加权计算
+	 * @return Word[] 有序单词数组
 	 */
 	public Word[] topKWordsWeighting (String fileName, int groupNum,int topK, boolean isWeight) {
 		BufferedReader bufferedReader = null;
