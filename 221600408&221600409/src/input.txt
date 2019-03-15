@@ -1,3 +1,0 @@
-0
-title: Monday Tuesday Wednesday Thursday
-abstract: Monday Tuesday Wednesday Thursday Friday
