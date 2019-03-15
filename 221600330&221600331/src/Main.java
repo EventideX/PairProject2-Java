@@ -3,60 +3,75 @@ import java.util.*;
 public class Main {
 
 	public static void main(String[] args) {
-		/*æ˜¯å¦åŠ æƒé‡*/
-		boolean isWeight=false;       
-		int countChar;
-		int countLinnes;
-		int phraseLength;
-		int numbers=10;
-		/*è¾“å…¥ä¸è¾“å‡ºåœ°å€*/
+		
+		int count_char = 0;
+		int count_rows = 0;
+		int count_words_num = 0;
+		int phraseLength = 3;  //Ò»¸ö´Ê×éµÄ°üº¬µÄµ¥´ÊÊı
+		boolean is_weight=false;  //ÊÇ·ñ¼ÓÈ¨ÖØ
+		int numbers=11;
+		
+		//ÊäÈëÓëÊä³öµØÖ·
 		String in_name = "test.txt";
 		String out_name = "result.txt";
 		for(int i=0;i<args.length;i+=2) {
 			switch(args[i]) {
 				case "-i":
-					/*æ›´æ”¹è¾“å…¥åœ°å€*/
-					in_name=args[i+1];
+					
+					in_name=args[i+1];//¸ü¸ÄÊäÈëÎÄ¼şÂ·¾¶
 					break;
 				case "-o":
-					/*æ›´æ”¹è¾“å‡ºåœ°å€*/
-					out_name=args[i+1];
+					
+					out_name=args[i+1];//¸ü¸ÄÊä³öÎÄ¼şÂ·¾¶
 					break;
 				case "-w":
-					/*ç”±è¾“å…¥å‚æ•°é€‰æ‹©æƒé‡å æ¯”*/
+					//ÓÉÊäÈë²ÎÊıÑ¡ÔñÈ¨ÖØÕ¼±È
 					if(Integer.parseInt(args[i+1])==0) {
-						isWeight=false;
+						is_weight=false;
 					}else {
-						isWeight=true;
+						is_weight=true;
 					}
 					break;
 				case "-m":
-					/*ç»Ÿè®¡æ–‡ä»¶å¤¹ä¸­æŒ‡å®šé•¿åº¦çš„è¯ç»„çš„è¯é¢‘
-					 * å‡ºç°-mæ—¶åªç»Ÿè®¡è¯ç»„è¯é¢‘
-					 * æœªå‡ºç°-mæ—¶åªç»Ÿè®¡å•è¯è¯é¢‘
+					/*Í³¼ÆÎÄ¼ş¼ĞÖĞÖ¸¶¨³¤¶ÈµÄ´Ê×éµÄ´ÊÆµ
+					 * ³öÏÖ-mÊ±Ö»Í³¼Æ´Ê×é´ÊÆµ
+					 * Î´³öÏÖ-mÊ±Ö»Í³¼Æµ¥´Ê´ÊÆµ
 					 * */
 					phraseLength=Integer.parseInt(args[i+1]);
 					break;
 				case "-n":
-					/*ç”¨æˆ·æŒ‡å®šè¾“å‡ºå‰numberå¤šçš„å•è¯(è¯ç»„)ä¸å…¶é¢‘æ•°
-					 * è¡¨ç¤ºè¾“å‡ºé¢‘æ•°æœ€å¤šçš„å‰ [number] ä¸ªå•è¯(è¯ç»„)
+					/*ÓÃ»§Ö¸¶¨Êä³öÇ°number¶àµÄµ¥´Ê(´Ê×é)ÓëÆäÆµÊı
+					 * ±íÊ¾Êä³öÆµÊı×î¶àµÄÇ° [number] ¸öµ¥´Ê(´Ê×é)
 					 * */
 					numbers=Integer.parseInt(args[i+1]);
 					break;
+				default:
+						System.out.println("Ö¸Áî´íÎó£¡£¡£¡");
 			}
 		}
+		
 		Map<String, String> wordsMap;
 		Map<String, String> wordsFrequency;
-		/*è¾“å‡ºæ–‡ä»¶çš„å­—ç¬¦æ•°*/
-		countChar = wordCount.count_Characters(in_name);
-		/*ç»Ÿè®¡å•è¯å‡ºç°æ¬¡æ•°å’Œå•è¯æ€»æ•°*/
-		wordsMap = wordCount.count_Words(in_name);
-		/*ç»Ÿè®¡è¡Œæ•°*/
-		countLinnes = wordCount.count_Lines(in_name);
-		/*åˆæ­¥ç»Ÿè®¡çš„å•è¯(æˆ–è¯ç»„)å’Œè¯é¢‘çš„Mapã€æ•°å­—é€‰é¡¹*/
-		wordsFrequency=wordCount.count_Word_Frequency(in_name, wordsMap,isWeight);
-		/*è¾“å‡ºè‡³æ–‡ä»¶ä¸­*/
-		wordCount.writeToFile(countChar,wordsFrequency,countLinnes,out_name,numbers);
+
+		String new_file = lib.rewrite_Txt(in_name);//È¥µôÂÛÎÄÅÀÈ¡½á¹ûÎÄ¼şÖĞµÄ¡°Title: ¡±¡¢¡°Abstract: ¡±¡¢ÂÛÎÄ±àºÅ¼°Æä½ô¸ú×ÅµÄ»»ĞĞ·ûÒÔ¼°·Ö¸ôÂÛÎÄµÄÁ½¸ö»»ĞĞ·û²¢Ğ´ÈëÒ»¸öĞÂÎÄ¼ş¡°new_Txt.txt¡±
+		
+		count_char = lib.count_Characters(new_file)-1;//Í³¼ÆÎÄ¼şµÄ×Ö·ûÊı
+		
+		wordsMap = lib.count_Words(new_file);//´ÓÎÄ¼şÌáÈ¡µ¥´Ê²¢ÇÒÍ³¼Æµ¥´Ê³öÏÖ´ÎÊıºÍµ¥´Ê×ÜÊı·ÅÈëMap
+		count_words_num = Integer.parseInt(wordsMap.get("count_words_num"));//Í³¼ÆÎÄ¼şµÄµ¥´ÊÊı
+		
+		count_rows = lib.count_Lines(new_file);//Í³¼ÆÎÄ¼şµÄĞĞÊı
+		
+		wordsFrequency=lib.count_Word_Frequency(in_name, wordsMap,is_weight);//Í³¼Æµ¥´ÊµÄÈ¨ÖØ´ÊÆµ
+		
+		
+		
+		if( phraseLength > 0 ) {
+			Map<String, String> phraseFrequency = lib.count_Phrase_frequency(in_name, phraseLength, is_weight);//Í³¼Æ´Ê×éµÄÈ¨ÖØ´ÊÆµ
+			lib.writeToFile(phraseFrequency,count_char,count_words_num,count_rows,out_name,numbers);//Êä³öÖÁÎÄ¼şÖĞ
+		}
+		else
+			lib.writeToFile(wordsFrequency,count_char,count_words_num,count_rows,out_name,numbers);//Êä³öÖÁÎÄ¼şÖĞ
 	}
 	
 	
