@@ -7,11 +7,11 @@ import java.util.*;
 import java.io.*;
 
 /**
- * ¹¦ÄÜ£ºÅÀÈ¡¶¥»áÂÛÎÄ£¨±êÌâ+ÕªÒª£©£¬²¢±£´æµ½ÎÄ¼şÖĞ
- * ±àÒë£ºjavac -cp jsoup-1.11.3.jar; Main.java
- * ÔËĞĞ£ºjava -cp jsoup-1.11.3.jar; Main
+ * åŠŸèƒ½ï¼šçˆ¬å–é¡¶ä¼šè®ºæ–‡ï¼ˆæ ‡é¢˜+æ‘˜è¦ï¼‰ï¼Œå¹¶ä¿å­˜åˆ°æ–‡ä»¶ä¸­
+ * ç¼–è¯‘ï¼šjavac -cp jsoup-1.11.3.jar; Main.java
+ * è¿è¡Œï¼šjava -cp jsoup-1.11.3.jar; Main
  */
-public class Main2 {
+public class Main {
 	
 	public static void main(String[] args) {
 		final String ROOT = "http://openaccess.thecvf.com/";
@@ -27,31 +27,31 @@ public class Main2 {
 			if (! outPutFile.exists()){outPutFile.createNewFile();}
 			FileWriter writter = new FileWriter(outPutFile.getName(), true);
 				
-			// »ñÈ¡ËùÓĞptitleÁ´½Ó
+			// è·å–æ‰€æœ‰ptitleé“¾æ¥
 			Elements elements = doc.getElementsByClass("ptitle");
 			Iterator it = elements.iterator(); 
 			while(it.hasNext()) {
 				Element e = (Element)it.next();
 				aPaperTitle = e.text();
-				// »ñÈ¡ÎÄÕÂÏêÇéÁ´½Ó
+				// è·å–æ–‡ç« è¯¦æƒ…é“¾æ¥
 				aPaperUrl = e.getElementsByTag("a").first().attr("href");
 				System.out.println(ROOT + aPaperUrl);
-				// ·ÀÖ¹ÅÀÈ¡¹ı¿ì£¬±»·şÎñÆ÷¾Ü¾ø·ÃÎÊ
+				// é˜²æ­¢çˆ¬å–è¿‡å¿«ï¼Œè¢«æœåŠ¡å™¨æ‹’ç»è®¿é—®
 				// Thread.sleep(1000);
 				aPaperDoc = Jsoup.connect(ROOT + aPaperUrl).timeout(TIME_OUT).get();
 				Element ee = aPaperDoc.getElementById("abstract");
 				aPaperAbstract = ee.text();
 				writter.write(String.format(
-					// ¿ØÖÆ×îºóÒ»ÆªÎÄÕÂºóÎŞ»»ĞĞ
+					// æ§åˆ¶æœ€åä¸€ç¯‡æ–‡ç« åæ— æ¢è¡Œ
 					"%d\r\nTitle: %s\r\nAbstract: %s" +
 					(!it.hasNext() ? "":"\r\n\r\n\r\n"),
 					id++, aPaperTitle, aPaperAbstract
 				));
 			}
 			writter.close();
-			System.out.println("\r\n\r\nÅÀÈ¡Íê±Ï£¬Ò»¹²ÅÀÈ¡" + id + "ÆªÂÛÎÄ.");
+			System.out.println("\r\n\r\nçˆ¬å–å®Œæ¯•ï¼Œä¸€å…±çˆ¬å–" + id + "ç¯‡è®ºæ–‡.");
 		} catch (Exception e) {
-			System.out.println("ÅÀÈ¡´íÎó");
+			System.out.println("çˆ¬å–é”™è¯¯");
 			e.printStackTrace();
 		}
 	}
