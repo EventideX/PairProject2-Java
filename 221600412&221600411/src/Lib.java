@@ -30,6 +30,9 @@ public class Lib {
     }
 
     public String printChar() {
+        if(charNum == 0){
+            return "characters: 0";
+        }
         return "characters: " + String.valueOf(charNum - 1);
     }
 

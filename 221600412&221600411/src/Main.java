@@ -49,7 +49,6 @@ public class Main {
         String str2 = lib.printWord();  // Count words
         String str3 = lib.printLines(); // Calculate number of lines
         String str4 = lib.printCountMostWord(instance.n);// Computing word frequency
-        System.out.println(str1 + "\r\n" + str2 + "\r\n" + str3 + "\r\n" + str4);
         instance.writeFile(instance.outputFileName,str1 + "\r\n" + str2 + "\r\n" + str3 + "\r\n" + str4);
     }
 
