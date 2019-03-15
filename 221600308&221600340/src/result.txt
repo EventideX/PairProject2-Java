@@ -1,0 +1,13 @@
+characters: 1195833
+words: 120363
+lines: 1958
+<neural networks>: 479
+<this paper>: 470
+<object detection>: 453
+<convolutional neural>: 366
+<generative adversarial>: 340
+<show that>: 340
+<neural network>: 305
+<pose estimation>: 298
+<semantic segmentation>: 280
+<large-scale>: 240
