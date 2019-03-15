@@ -57,6 +57,8 @@ public class Main{
         loadArgs(args);
         checkArgs();
         inputFileBytes = readFileToBytes(inputFileName);
+		inputFileBytes = filterAscii(inputFileBytes);
+		// System.out.println(new String(inputFileBytes));
         processBytes();
 
         try {
@@ -76,11 +78,11 @@ public class Main{
 
         } catch(Exception e){
             e.printStackTrace();
-            System.exit(0);
+            System.exit(1);
         }
 
         // 结果
-        printResult();
+        // printResult();
         writeResult();
     }
 
@@ -128,12 +130,12 @@ public class Main{
             System.out.println("未输入参数");
             System.exit(1);
         }
-        System.out.println(String.format(
-            "inputFileName:%s\noutputFileName:%s\nphraseWordNum:%s\n" +
-            "sortedPrintNum:%s\nuseWordWeight: %s\n",
-            inputFileName, outputFileName, phraseWordNum,
-            sortedPrintNum, useWordWeight?"use":"no-use"
-        ));
+//        System.out.println(String.format(
+//            "inputFileName:%s\noutputFileName:%s\nphraseWordNum:%s\n" +
+//            "sortedPrintNum:%s\nuseWordWeight: %s\n",
+//            inputFileName, outputFileName, phraseWordNum,
+//            sortedPrintNum, useWordWeight?"use":"no-use"
+//        ));
     }
 
     /**
@@ -208,6 +210,26 @@ public class Main{
         // System.out.println(new String(abstractBytes));
         // System.out.println("title num: " + tbNum + " abstract num: " + abNum);
     }
+	
+	/**
+	 * 过滤掉字节数组中的非ascii码字符
+	 *
+	 * @param bytes 字节数组
+	 *
+	 * @return noAsciiBytes
+	 */
+	static byte[] filterAscii(byte[] bytes){
+		byte[] noAsciiBytes_ = new byte[bytes.length];
+		int j = 0;
+		for (int i = 0; i < bytes.length; i++){
+			if (bytes[i] < 128 && bytes[i] >= 0){
+				noAsciiBytes_[j++] = bytes[i];
+			}
+		}
+		byte[] noAsciiBytes = new byte[j];
+        System.arraycopy(noAsciiBytes_, 0, noAsciiBytes, 0, j);
+		return noAsciiBytes;
+	}
 
     /**
      * 读取文件到字节数组中
@@ -224,7 +246,7 @@ public class Main{
             if (file.isFile() && file.exists()){
                 FileInputStream reader = new FileInputStream(file);
                 Long fileLength = file.length();
-                System.out.println("fileLength: " + fileLength);
+//                System.out.println("fileLength: " + fileLength);
                 fileBytes = new byte[fileLength.intValue()];
                 reader.read(fileBytes);
                 reader.close();

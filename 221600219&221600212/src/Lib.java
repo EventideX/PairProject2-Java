@@ -1,4 +1,3 @@
-import java.io.*;
 import java.util.*;
 
 public class Lib{
@@ -42,7 +41,6 @@ public class Lib{
     public static int getLineNum(){return lineNum;}
     public static List<Map.Entry<String, Integer>> getSortedList(){return wordList;}
 
-
     public static void main(String[] args) {
         System.out.println(isSeparator((byte)'&'));
     }
@@ -65,6 +63,10 @@ public class Lib{
 		this.titleWordWeight = titleWordWeight;
 		this.abstractWordWeight = abstractWordWeight;
         this.wordMap = new TreeMap<String, Integer>();
+        charNum = 0;
+        wordNum = 0;
+        lineNum = 0;
+        wordList = null;
     }
 
 	/**
@@ -88,25 +90,27 @@ public class Lib{
 		int bytesLength = bytes.length;
         // 计算字符数、行数
         for (int i = 0; i < bytesLength; i ++){
-            // 预处理，大写字母统一转为小写字母
-            if (bytes[i] >= 65 && bytes[i] <= 90){
-                bytes[i] += 32;
-            }
-            if (bytes[i] == 10){
-                // 计算行数
-                if (checkLine(bytes, i)){
-                    lineNum ++;
-                }
-				// 当换行为\n时保证不遗漏字符
-				if (i-1 >= 0 && bytes[i-1] != 13){
+            // 预处理，大写字母统一转为小写字母，同时过滤非ascii码字符
+			if (bytes[i] >= 0 && bytes[i] < 128){
+				if (bytes[i] >= 65 && bytes[i] <= 90){
+					bytes[i] += 32;
+				}
+				if (bytes[i] == 10){
+					// 计算行数
+					if (checkLine(bytes, i)){
+						lineNum ++;
+					}
+					// 当换行为\n时保证不遗漏字符
+					if (i-1 >= 0 && bytes[i-1] != 13){
+						charNum ++;
+					}
+				}else{
 					charNum ++;
 				}
-            }else{
-                charNum ++;
-            }
+			}
         }
         // 注意最后一行不以回车结尾的情况，同样算作一行
-        if (bytes[bytesLength-1] != 10){
+        if (bytes[bytesLength-1] != 10 && checkLine(bytes, bytesLength-1)){
             lineNum ++;
         }
     }
@@ -272,7 +276,7 @@ public class Lib{
 		int bytesLength = bytes.length;
 		int nowIndex = start;
 		int checkWordResult = -1;
-		for (int i = 0; i < phraseWordNum; i++){
+		for (int i = 0; nowIndex < bytesLength && i < phraseWordNum; i++){
 			checkWordResult = checkWord(bytes, nowIndex, MIN_WORD_LETTER_NUM);
 			if (checkWordResult > 0){
 				String aWordString = subBytesToString(bytes, nowIndex, checkWordResult);
@@ -280,17 +284,25 @@ public class Lib{
 				// 跳转单词末尾
 				nowIndex = checkWordResult;
 				// 判断是否是换行分隔符(\r\n或者\n)，如是，无法构成词组
-				if ((i != phraseWordNum-1) && (bytes[nowIndex] == 10 || 
+				if ((i < phraseWordNum-1) && (nowIndex < bytesLength-1 && bytes[nowIndex] == 10 ||
 						(nowIndex < bytesLength-1 && bytes[nowIndex + 1] == 10))){
 					// System.out.println("遇到换行");
 					return null;
 				}
-				// 跳过分隔符
+				// 跳过分隔符、分隔符可能不止一个，但一定没有\n \r\n
 				if (i != phraseWordNum-1){
-					nowIndex ++;
+					while (nowIndex < bytesLength && isSeparator(bytes[nowIndex])){
+						if (bytes[nowIndex] == 10){
+							return null;
+						}
+						nowIndex ++;
+					}
 				}
 			} else{
 				// System.out.println("不是单词，无法构成词组");
+				return null;
+			}
+			if (i != phraseWordNum-1 && nowIndex == bytesLength){
 				return null;
 			}
 		}

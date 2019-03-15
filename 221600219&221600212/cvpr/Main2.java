@@ -11,7 +11,7 @@ import java.io.*;
  * ±‡“Î£∫javac -cp jsoup-1.11.3.jar; Main.java
  * ‘À––£∫java -cp jsoup-1.11.3.jar; Main
  */
-public class Main {
+public class Main2 {
 	
 	public static void main(String[] args) {
 		final String ROOT = "http://openaccess.thecvf.com/";
