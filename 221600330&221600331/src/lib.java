@@ -13,14 +13,13 @@ import java.util.Map;
 
 public class lib {
 
-	
 	/*
-	 * ͳ���ļ�����Ч���������ǿհ��ַ����У� ���룺�ļ�·�� ������ļ�����Ч�����������ǿհ��ַ����У�
+	 * 统计文件的有效行数包含非空白字符的行） 输入：文件路径 输出：文件的有效行数（包含非空白字符的行）
 	 */
 	public static int count_Lines(String file_path) {
 		try {
 			File input_file = new File(file_path);
-			if (input_file.isFile() && input_file.exists())// �ж��ļ��Ƿ����
+			if (input_file.isFile() && input_file.exists())// 判断文件是否存在
 			{
 				InputStreamReader reader = new InputStreamReader(new FileInputStream(input_file));
 				BufferedReader bufferedReader = new BufferedReader(reader);
@@ -37,11 +36,11 @@ public class lib {
 				reader.close();
 				return countLinnes;
 			} else {
-				System.out.println("�Ҳ���ָ�����ļ�");
+				System.out.println("找不到指定的文件");
 				return -1;
 			}
 		} catch (IOException e) {
-			System.out.println("��ȡ�ļ����ݳ���");
+			System.out.println("读取文件内容出错");
 			e.printStackTrace();
 			return -1;
 		}
@@ -49,9 +48,9 @@ public class lib {
 
 
 	/*
-	 * ͳ���ļ��еĵ������� 
-	 * ���룺�ļ�·�� 
-	 * ������ļ��еĵ�������
+	 * 统计文件中的单词总数 
+	 * 输入：文件路径 
+	 * 输出：文件中的单词总数
 	 */
 	public static int get_Words_Num(String file_path) {
 		Map<String, String> wordsMap = lib.count_Words(file_path);
@@ -61,18 +60,18 @@ public class lib {
 
 	
 	/*
-	 * ���ļ���ȡ���ʲ���ͳ�Ƶ��ʳ��ִ����͵�����������Map
-	 * ���룺�ļ�·�� 
-	 * ������������������͸������ʳ��ִ�����Map
+	 * 从文件提取单词并且统计单词出现次数和单词总数放入Map
+	 * 输入：文件路径 
+	 * 输出：包涵单词总数和各个单词出现次数的Map
 	 */
 	public static Map<String, String> count_Words(String file_path) {
 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("count_words_num", "0");// ��¼��������
+		map.put("count_words_num", "0");// 记录单词总数
 
 		try {
 			File input_file = new File(file_path);
-			if (input_file.isFile() && input_file.exists()) { // �ж��ļ��Ƿ����
+			if (input_file.isFile() && input_file.exists()) { // 判断文件是否存在
 				InputStreamReader reader = new InputStreamReader(new FileInputStream(input_file));
 				BufferedReader bufferedReader = new BufferedReader(reader);
 				String str = null;
@@ -82,24 +81,24 @@ public class lib {
 					for (int i = 0; i < (str.length() - 3); i++) {
 						if (i > 0) {
 							if (('a' <= str.charAt(i - 1) && str.charAt(i - 1) <= 'z')
-									|| (48 <= str.charAt(i - 1) && str.charAt(i - 1) <= 57)) {// ���ǰһ���ַ����ַ�������
+									|| (48 <= str.charAt(i - 1) && str.charAt(i - 1) <= 57)) {// 如果前一个字符是字符或数字
 								continue;
 							}
 						}
 						if ('a' <= str.charAt(i) && str.charAt(i) <= 'z') {
 							if ('a' <= str.charAt(i + 1) && str.charAt(i + 1) <= 'z') {
 								if ('a' <= str.charAt(i + 2) && str.charAt(i + 2) <= 'z') {
-									if ('a' <= str.charAt(i + 3) && str.charAt(i + 3) <= 'z') {// �ҵ�����
+									if ('a' <= str.charAt(i + 3) && str.charAt(i + 3) <= 'z') {// 找到单词
 										int j;
-										for (j = i + 4; j < str.length(); j++) {// �������Ƿ����
+										for (j = i + 4; j < str.length(); j++) {// 看单词是否结束
 											if ('a' > str.charAt(j) || str.charAt(j) > 'z') {
-												if (48 > str.charAt(j) || str.charAt(j) > 57)// ��������
+												if (48 > str.charAt(j) || str.charAt(j) > 57)// 不是数字
 													break;
 											}
 										}
-										String temp = str.substring(i, j);// ��ȡ�ַ���������i��j���򣨰���i��������j��
+										String temp = str.substring(i, j);// 截取字符串索引号i到j区域（包括i，不包括j）
 										
-										// �ӵ�Map��ȥ
+										// 加到Map里去
 										if (map.containsKey(temp)) {
 											int n = Integer.parseInt(map.get(temp));
 											n++;
@@ -108,7 +107,7 @@ public class lib {
 											map.put(temp, "1");
 
 										int n = Integer.parseInt(map.get("count_words_num"));
-										n++;// �ܵ��ʸ�����һ
+										n++;// 总单词个数加一
 										map.put("count_words_num", n + "");
 
 										i = j;
@@ -126,11 +125,11 @@ public class lib {
 				return map;
 
 			} else {
-				System.out.println("�Ҳ���ָ�����ļ�");
+				System.out.println("找不到指定的文件");
 				return null;
 			}
 		} catch (IOException e) {
-			System.out.println("��ȡ�ļ����ݳ���");
+			System.out.println("读取文件内容出错");
 			e.printStackTrace();
 			return null;
 		}
@@ -138,14 +137,14 @@ public class lib {
 
 	
 	/*
-	 * ͳ���ļ��ܵ��ַ��� 
-	 * ���룺�ļ�·�� 
-	 * ������ļ����ַ����������հ��ַ���
+	 * 统计文件总的字符数 
+	 * 输入：文件路径 
+	 * 输出：文件的字符数（包括空白字符）
 	 */
 	public static int count_Characters(String file_path) {
 		try {
 			File input_file = new File(file_path);
-			if (input_file.isFile() && input_file.exists()) { // �ж��ļ��Ƿ����
+			if (input_file.isFile() && input_file.exists()) { // 判断文件是否存在
 				InputStreamReader reader = new InputStreamReader(new FileInputStream(input_file));
 				int count_char = 0;
 				int temp;
@@ -161,11 +160,11 @@ public class lib {
 				reader.close();
 				return count_char;
 			} else {
-				System.out.println("�Ҳ���ָ�����ļ�");
+				System.out.println("找不到指定的文件");
 				return -1;
 			}
 		} catch (Exception e) {
-			System.out.println("��ȡ�ļ����ݳ���");
+			System.out.println("读取文件内容出错");
 			e.printStackTrace();
 			return -1;
 		}
@@ -174,28 +173,28 @@ public class lib {
 
 	
 	/*
-	 * ���ļ���ȡm�����ʹ��ɵĴ��鲢��ͳ�ƴ��鼰�����Ȩ�ش�Ƶ 
-	 * ���룺�ļ�·����һ������ĵ��������Ƿ�10:1��Ȩ��ͳ�ƴ�Ƶ��booleanֵ
-	 * ������������������͸��������Ƶ��Map
+	 * 从文件提取m个单词构成的词组并且统计词组及词组的权重词频 
+	 * 输入：文件路径，一个词组的单词数，是否按10:1的权重统计词频的boolean值
+	 * 输出：包涵词组总数和各个词组词频的Map
 	 */
 	public static Map<String, String> count_Phrase_frequency(String file_path, int phraseLength, boolean is_weight) {
 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("count_words_num", "0");// ע�⣡��wordsMap�м�����һ����count_words_num���ļ�����ͳ�ƴ�����������������Ŷ��
+		map.put("count_words_num", "0");// 注意！！wordsMap中加入了一个“count_words_num”的键用于统计词组总数（不是种数哦）
 
 		try {
 			File input_file = new File(file_path);
-			if (input_file.isFile() && input_file.exists()) { // �ж��ļ��Ƿ����
+			if (input_file.isFile() && input_file.exists()) { // 判断文件是否存在
 				InputStreamReader reader = new InputStreamReader(new FileInputStream(input_file));
 				BufferedReader bufferedReader = new BufferedReader(reader);
 				String str = null;
 				boolean is_title = false;
 
 				while ((str = bufferedReader.readLine()) != null) {
-					str = file.clear_String(str);
+					str = clear_String(str);
 					str = str.toLowerCase();
 
-					// ȥ��"title: "��"abstract: "
+					// 去掉"title: "和"abstract: "
 					if (str.contains("title: ")) {
 						is_title = true;
 						str = str.substring(0, str.indexOf("title: ")) + str.substring(str.indexOf("title: ") + 7);
@@ -204,33 +203,33 @@ public class lib {
 					if (str.contains("abstract: "))
 						str = str.substring(0, str.indexOf("abstract: ")) + str.substring(str.indexOf("abstract: ") + 10);
 
-					int count = 0;// �����������ֵĵ�����
-					String[] words = new String[101];// �洢�������ֵĵ���
+					int count = 0;// 计算连续出现的单词数
+					String[] words = new String[101];// 存储连续出现的单词
 
 					for (int i = 0; i < (str.length() - 3); i++) {
 						if (i > 0) {
 							if (('a' <= str.charAt(i - 1) && str.charAt(i - 1) <= 'z')
-									|| (48 <= str.charAt(i - 1) && str.charAt(i - 1) <= 57)) {// ���ǰһ���ַ����ַ�������
+									|| (48 <= str.charAt(i - 1) && str.charAt(i - 1) <= 57)) {// 如果前一个字符是字符或数字
 								continue;
 							}
 						}
 						if ('a' <= str.charAt(i) && str.charAt(i) <= 'z') {
 							if ('a' <= str.charAt(i + 1) && str.charAt(i + 1) <= 'z') {
 								if ('a' <= str.charAt(i + 2) && str.charAt(i + 2) <= 'z') {
-									if ('a' <= str.charAt(i + 3) && str.charAt(i + 3) <= 'z') {// �ҵ�һ������
+									if ('a' <= str.charAt(i + 3) && str.charAt(i + 3) <= 'z') {// 找到一个单词
 
 										int j;
-										for (j = i + 4; j < str.length(); j++) {// �������Ƿ����
+										for (j = i + 4; j < str.length(); j++) {// 看单词是否结束
 											if ('a' > str.charAt(j) || str.charAt(j) > 'z') {
-												if (48 > str.charAt(j) || str.charAt(j) > 57)// �������֣������ָ���
+												if (48 > str.charAt(j) || str.charAt(j) > 57)// 不是数字，遇到分隔符
 													break;
 											}
 										}
-										String temp = str.substring(i, j);// ��ȡ�ַ���������i��j���򣨰���i��������j+1��---��ȡ����
-										if (j == str.length())// һ�����Ե��ʽ�β
+										String temp = str.substring(i, j);// 截取字符串索引号i到j区域（包括i，不包括j+1）---截取单词
+										if (j == str.length())// 一段中以单词结尾
 											temp = temp + " ";
 										else
-											temp = temp + str.charAt(j);// �ѵ��ʺ����һ���ָ����ӵ�������ȥ
+											temp = temp + str.charAt(j);// 把单词后面的一个分隔符加到单词中去
 										count++;
 										words[count] = temp;
 										if (count >= phraseLength) {
@@ -238,10 +237,10 @@ public class lib {
 											for (int k = phraseLength; k > 1; k--) {
 												temp = temp + words[count - k + 2];
 											}
-											temp = temp.substring(0, temp.length() - 1);// �Ͳ���ȥ��ĩβ�ķָ��
+											temp = temp.substring(0, temp.length() - 1);// 和并后去掉末尾的分割符
 
-											// �ӵ�Map��ȥ
-											if (is_weight && is_title)// ����ȨֵΪ10:1,���Ҹô�����title����
+											// 加到Map里去
+											if (is_weight && is_title)// 计算权值为10:1,并且该词组在title段中
 											{
 												if (map.containsKey(temp)) {
 													int n = Integer.parseInt(map.get(temp));
@@ -250,7 +249,7 @@ public class lib {
 												} else
 													map.put(temp, "10");
 											} else {
-												// ����Ҫ����Ȩֵ
+												// 不需要计算权值
 												if (map.containsKey(temp)) {
 													int n = Integer.parseInt(map.get(temp));
 													n++;
@@ -260,27 +259,27 @@ public class lib {
 											}
 
 											int n = Integer.parseInt(map.get("count_words_num"));
-											n++;// �ܴ��������һ
+											n++;// 总词组个数加一
 											map.put("count_words_num", n + "");
 										}
 										i = j;
 									} else {
 										count = 0;
 										i = i + 3;
-									} // ��������4����ĸ�ĵ��ʣ�����count
+									} // 遇到少于4个字母的单词，结束count
 								} else {
 									count = 0;
 									i = i + 2;
-								} // ��������4����ĸ�ĵ��ʣ�����count
+								} // 遇到少于4个字母的单词，结束count
 							} else {
 								count = 0;
 								i = i + 1;
-							} // ��������4����ĸ�ĵ��ʣ�����count
+							} // 遇到少于4个字母的单词，结束count
 						} else {
-							if ((48 > str.charAt(i) || str.charAt(i) > 57)) {// �����ָ����ӵ��ӵ���һ������ĩβ
+							if ((48 > str.charAt(i) || str.charAt(i) > 57)) {// 遇到分隔符加到加到上一个单词末尾
 								words[count] += str.charAt(i);
 							} else {
-								// �������֣�����count
+								// 遇到数字，结束count
 								count = 0;
 							}
 						}
@@ -291,11 +290,11 @@ public class lib {
 				return map;
 
 			} else {
-				System.out.println("�Ҳ���ָ�����ļ�");
+				System.out.println("找不到指定的文件");
 				return null;
 			}
 		} catch (IOException e) {
-			System.out.println("��ȡ�ļ����ݳ���");
+			System.out.println("读取文件内容出错");
 			e.printStackTrace();
 			return null;
 		}
@@ -303,21 +302,21 @@ public class lib {
 
 	
 	/*
-	 * ��Ȩ��ͳ���ļ��ĵ��ʴ�Ƶ(0��ʾ���� Title��Abstract �ĵ���Ȩ����ͬ��Ϊ 1; 1 ��ʾ����Title�ĵ���Ȩ��Ϊ10������Abstract ����Ȩ��Ϊ1) 
-	 * ���룺�ļ�·��������ͳ�Ƶĵ��ʺʹ�Ƶ��Map���Ƿ�ʹ�ð�10:1��Ȩ�ص�boolean
-	 * �������Ȩ��ͳ�Ƶĵ��ʺʹ�Ƶ��Map
+	 * 按权重统计文件的单词词频(0表示属于 Title、Abstract 的单词权重相同均为 1; 1 表示属于Title的单词权重为10，属于Abstract 单词权重为1) 
+	 * 输入：文件路径、初步统计的单词和词频的Map、是否使用按10:1的权重的boolean
+	 * 输出：按权重统计的单词和词频的Map
 	 */
 	public static Map<String, String> count_Word_Frequency(String input_file_path, Map<String, String> wordsMap,boolean is_weight) {
 
 		try {
 			File input_file = new File(input_file_path);
-			if (input_file.isFile() && input_file.exists())// �ж��ļ��Ƿ����
+			if (input_file.isFile() && input_file.exists())// 判断文件是否存在
 			{
 				if (!is_weight) {
-					// Ȩ��1:1
+					// 权重1:1
 					return wordsMap;
 				} else if (is_weight) {
-					// Ȩ��10:1
+					// 权重10:1
 					InputStreamReader reader;
 					BufferedReader bufferedReader;
 					String str = null; 
@@ -329,25 +328,25 @@ public class lib {
 						if (str.contains("title: ")) {
 							for (int i = 5; i < (str.length() - 3); i++) {
 								if (('a' <= str.charAt(i - 1) && str.charAt(i - 1) <= 'z')
-										|| (48 <= str.charAt(i - 1) && str.charAt(i - 1) <= 57)) {// ���ǰһ���ַ����ַ�������
+										|| (48 <= str.charAt(i - 1) && str.charAt(i - 1) <= 57)) {// 如果前一个字符是字符或数字
 									continue;
 								}
 								if ('a' <= str.charAt(i) && str.charAt(i) <= 'z') {
 									if ('a' <= str.charAt(i + 1) && str.charAt(i + 1) <= 'z') {
 										if ('a' <= str.charAt(i + 2) && str.charAt(i + 2) <= 'z') {
 											if ('a' <= str.charAt(i + 3) && str.charAt(i + 3) <= 'z') {
-												// �ҵ�����
+												// 找到单词
 												int j;
 												for (j = i + 4; j < str.length(); j++) {
-													// �������Ƿ����
+													// 看单词是否结束
 													if ('a' > str.charAt(j) || str.charAt(j) > 'z') {
 														if (48 > str.charAt(j) || str.charAt(j) > 57)
-															// �����ַ������֣����ʽ���
+															// 不是字符或数字，单词结束
 															break;
 													}
 												}
-												String temp = str.substring(i, j);// ��ȡ�ַ���������i��j���򣨰���i��������j��
-												// ��Ƶ��9
+												String temp = str.substring(i, j);// 截取字符串索引号i到j区域（包括i，不包括j）
+												// 词频加9
 												if (wordsMap.containsKey(temp)) {
 													int n = Integer.parseInt(wordsMap.get(temp));
 													n += 9;
@@ -367,20 +366,19 @@ public class lib {
 					reader.close();
 					return wordsMap;
 				} else {
-					System.out.println("������󣡣�");
+					System.out.println("命令错误！！");
 					return null;
 				}
 			} else {
-				System.out.println("�Ҳ���ָ�����ļ�");
+				System.out.println("找不到指定的文件");
 				return null;
 			}
 		} catch (IOException e) {
-			System.out.println("��ȡ�ļ����ݳ���");
+			System.out.println("读取文件内容出错");
 			e.printStackTrace();
 			return null;
 		}
 	}
-	
 
 }
 
