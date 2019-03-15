@@ -13,16 +13,16 @@ import java.util.Map;
 public class file {
 	
 	/*
-	 * ȥ��������ȡ����ļ��еġ�Title: ������Abstract: �������ı�ż�������ŵĻ��з��Լ��ָ����ĵ��������з���д��һ�����ļ���new_Txt.txt��
-	 * ���룺�ļ�·��
-	 * ������޸ĺ���ļ����ļ�·��
+	 * 去掉论文爬取结果文件中的“Title: ”、“Abstract: ”、论文编号及其紧跟着的换行符以及分隔论文的两个换行符并写入一个新文件“new_Txt.txt”
+	 * 输入：文件路径
+	 * 输出：修改后的文件的文件路径
 	 */
 	public static String rewrite_Txt(String file_path)
 	{
 		try {
 			File input_file = new File(file_path);
 			File output_file = new File("new_Txt.txt");
-			if (input_file.isFile() && input_file.exists()) { // �ж��ļ��Ƿ����
+			if (input_file.isFile() && input_file.exists()) { // 判断文件是否存在
 				InputStreamReader reader = new InputStreamReader(new FileInputStream(input_file));
 				OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(output_file));
 				BufferedReader bufferedReader = new BufferedReader(reader);
@@ -31,7 +31,7 @@ public class file {
 				String str = null;
 				while ((str = bufferedReader.readLine()) != null) {
 					
-					//�жϸö��Ƿ�Ϊ�������
+					//判断该段是否为论文序号
 					boolean is_Num = true;
 					for(int i = 0;i < str.length() ; i++){
 						int chr=str.charAt(i);
@@ -42,9 +42,9 @@ public class file {
 					}
 					if( is_Num || str.equals(""))
 						continue;
-					// ȥ����Ascii����ַ�
+					// 去掉非Ascii码的字符
 					str = clear_String(str);
-					// ȥ��"title: "��"abstract: "
+					// 去掉"title: "和"abstract: "
 					if (str.contains("Title: ")) {
 						str = str.substring(0, str.indexOf("Title: ")) + str.substring(str.indexOf("Title: ") + 7);
 						bufferedWriter.write(str+"\r\n");
@@ -66,11 +66,11 @@ public class file {
 				writer.close();
 				return "new_Txt.txt";
 			} else {
-				System.out.println("�Ҳ���ָ�����ļ�");
+				System.out.println("找不到指定的文件");
 				return null;
 			}
 		} catch (Exception e) {
-			System.out.println("��ȡ�ļ����ݳ���");
+			System.out.println("读取文件内容出错");
 			e.printStackTrace();
 			return null;
 		}
@@ -78,9 +78,9 @@ public class file {
 	
 	
 	/*
-	 * ȥ���ַ����еķ�ASCII��
-	 * ���룺�ַ���
-	 * �����ȥ����ASCII����ַ���
+	 * 去除字符串中的非ASCII码
+	 * 输入：字符串
+	 * 输出：去除非ASCII码的字符串
 	 */
 	public static String clear_String(String str)
 	{
