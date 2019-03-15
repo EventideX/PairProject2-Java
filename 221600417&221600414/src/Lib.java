@@ -27,6 +27,19 @@ class Lib {
         return map;
     }
 
+    // calculate the number of characters
+    static int getCharacters(String s) {
+        int num = 0, charInt;
+        for (int i = 0; i < s.length(); i++) {
+            charInt = s.charAt(i);
+            if (charInt <= 127) {
+                num++;
+            }
+        }
+        if (s.length() == 0) return 0;
+        else return (num + 1);
+    }
+
     // determine letter
     private static boolean isLetter(int charInt) {
         return (charInt >= 65 && charInt <= 90) || (charInt >= 97 && charInt <= 122);
@@ -62,7 +75,7 @@ class Lib {
     static boolean nextPaper(BufferedReader reader) throws IOException {
         boolean nextSuccess = false;
         for (int i = 0; i < 2; i++) {
-            if(reader.readLine() != null)   nextSuccess = true;
+            if (reader.readLine() != null) nextSuccess = true;
         }
         return nextSuccess;
     }
@@ -110,15 +123,15 @@ class Lib {
         return builder.toString();
     }
 
-    static void sortMapAndOut(Map<String, Integer> map, StringBuilder builder) {
+    static void sortMapAndOut(Map<String, Integer> map, StringBuilder builder, int sortLen) {
         map.entrySet()
                 .stream().sorted((e1, e2) -> {
                     int cmp = e2.getValue().compareTo(e1.getValue());
                     if (cmp == 0) return e1.getKey().compareTo(e2.getKey());
                     else return cmp;
                 })
-                .limit(10)
-                .forEach(o -> builder.append("<").append(o.getKey()).append(">").append(": ").append(o.getValue()).append("\n"));
+                .limit(sortLen)
+                .forEach(o -> builder.append("<").append(o.getKey()).append(">").append(": ").append(o.getValue()).append("\r\n"));
     }
 
     static void strOutFile(String s, String f) throws IOException {
