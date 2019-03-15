@@ -7,25 +7,25 @@ public class Main {
 		int count_char = 0;
 		int count_rows = 0;
 		int count_words_num = 0;
-		int phraseLength = 3;  //Ò»¸ö´Ê×éµÄ°üº¬µÄµ¥´ÊÊı
-		boolean is_weight=false;  //ÊÇ·ñ¼ÓÈ¨ÖØ
-		int numbers=11;
+		int phraseLength = 0;  //Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä°ï¿½ï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½
+		boolean is_weight=false;  //ï¿½Ç·ï¿½ï¿½È¨ï¿½ï¿½
+		int numbers=10;
 		
-		//ÊäÈëÓëÊä³öµØÖ·
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·
 		String in_name = "test.txt";
 		String out_name = "result.txt";
 		for(int i=0;i<args.length;i+=2) {
 			switch(args[i]) {
 				case "-i":
 					
-					in_name=args[i+1];//¸ü¸ÄÊäÈëÎÄ¼şÂ·¾¶
+					in_name=args[i+1];//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Â·ï¿½ï¿½
 					break;
 				case "-o":
 					
-					out_name=args[i+1];//¸ü¸ÄÊä³öÎÄ¼şÂ·¾¶
+					out_name=args[i+1];//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Â·ï¿½ï¿½
 					break;
 				case "-w":
-					//ÓÉÊäÈë²ÎÊıÑ¡ÔñÈ¨ÖØÕ¼±È
+					//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½È¨ï¿½ï¿½Õ¼ï¿½ï¿½
 					if(Integer.parseInt(args[i+1])==0) {
 						is_weight=false;
 					}else {
@@ -33,45 +33,45 @@ public class Main {
 					}
 					break;
 				case "-m":
-					/*Í³¼ÆÎÄ¼ş¼ĞÖĞÖ¸¶¨³¤¶ÈµÄ´Ê×éµÄ´ÊÆµ
-					 * ³öÏÖ-mÊ±Ö»Í³¼Æ´Ê×é´ÊÆµ
-					 * Î´³öÏÖ-mÊ±Ö»Í³¼Æµ¥´Ê´ÊÆµ
+					/*Í³ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ÈµÄ´ï¿½ï¿½ï¿½Ä´ï¿½Æµ
+					 * ï¿½ï¿½ï¿½ï¿½-mÊ±Ö»Í³ï¿½Æ´ï¿½ï¿½ï¿½ï¿½Æµ
+					 * Î´ï¿½ï¿½ï¿½ï¿½-mÊ±Ö»Í³ï¿½Æµï¿½ï¿½Ê´ï¿½Æµ
 					 * */
 					phraseLength=Integer.parseInt(args[i+1]);
 					break;
 				case "-n":
-					/*ÓÃ»§Ö¸¶¨Êä³öÇ°number¶àµÄµ¥´Ê(´Ê×é)ÓëÆäÆµÊı
-					 * ±íÊ¾Êä³öÆµÊı×î¶àµÄÇ° [number] ¸öµ¥´Ê(´Ê×é)
+					/*ï¿½Ã»ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Ç°numberï¿½ï¿½Äµï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½
+					 * ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç° [number] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)
 					 * */
 					numbers=Integer.parseInt(args[i+1]);
 					break;
 				default:
-						System.out.println("Ö¸Áî´íÎó£¡£¡£¡");
+						System.out.println("Ö¸ï¿½ï¿½ï¿½ï¿½ó£¡£ï¿½ï¿½ï¿½");
 			}
 		}
 		
 		Map<String, String> wordsMap;
 		Map<String, String> wordsFrequency;
 
-		String new_file = lib.rewrite_Txt(in_name);//È¥µôÂÛÎÄÅÀÈ¡½á¹ûÎÄ¼şÖĞµÄ¡°Title: ¡±¡¢¡°Abstract: ¡±¡¢ÂÛÎÄ±àºÅ¼°Æä½ô¸ú×ÅµÄ»»ĞĞ·ûÒÔ¼°·Ö¸ôÂÛÎÄµÄÁ½¸ö»»ĞĞ·û²¢Ğ´ÈëÒ»¸öĞÂÎÄ¼ş¡°new_Txt.txt¡±
+		String new_file = file.rewrite_Txt(in_name);//È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ĞµÄ¡ï¿½Title: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Abstract: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½Å¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÅµÄ»ï¿½ï¿½Ğ·ï¿½ï¿½Ô¼ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ·ï¿½ï¿½ï¿½Ğ´ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½new_Txt.txtï¿½ï¿½
 		
-		count_char = lib.count_Characters(new_file)-1;//Í³¼ÆÎÄ¼şµÄ×Ö·ûÊı
+		count_char = lib.count_Characters(new_file)-1;//Í³ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
 		
-		wordsMap = lib.count_Words(new_file);//´ÓÎÄ¼şÌáÈ¡µ¥´Ê²¢ÇÒÍ³¼Æµ¥´Ê³öÏÖ´ÎÊıºÍµ¥´Ê×ÜÊı·ÅÈëMap
-		count_words_num = Integer.parseInt(wordsMap.get("count_words_num"));//Í³¼ÆÎÄ¼şµÄµ¥´ÊÊı
+		wordsMap = lib.count_Words(new_file);//ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ê²ï¿½ï¿½ï¿½Í³ï¿½Æµï¿½ï¿½Ê³ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Map
+		count_words_num = Integer.parseInt(wordsMap.get("count_words_num"));//Í³ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½
 		
-		count_rows = lib.count_Lines(new_file);//Í³¼ÆÎÄ¼şµÄĞĞÊı
+		count_rows = lib.count_Lines(new_file);//Í³ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		
-		wordsFrequency=lib.count_Word_Frequency(in_name, wordsMap,is_weight);//Í³¼Æµ¥´ÊµÄÈ¨ÖØ´ÊÆµ
+		wordsFrequency=lib.count_Word_Frequency(in_name, wordsMap,is_weight);//Í³ï¿½Æµï¿½ï¿½Êµï¿½È¨ï¿½Ø´ï¿½Æµ
 		
 		
 		
 		if( phraseLength > 0 ) {
-			Map<String, String> phraseFrequency = lib.count_Phrase_frequency(in_name, phraseLength, is_weight);//Í³¼Æ´Ê×éµÄÈ¨ÖØ´ÊÆµ
-			lib.writeToFile(phraseFrequency,count_char,count_words_num,count_rows,out_name,numbers);//Êä³öÖÁÎÄ¼şÖĞ
+			Map<String, String> phraseFrequency = lib.count_Phrase_frequency(in_name, phraseLength, is_weight);//Í³ï¿½Æ´ï¿½ï¿½ï¿½ï¿½È¨ï¿½Ø´ï¿½Æµ
+			file.writeToFile(phraseFrequency,count_char,count_words_num,count_rows,out_name,numbers);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
 		}
 		else
-			lib.writeToFile(wordsFrequency,count_char,count_words_num,count_rows,out_name,numbers);//Êä³öÖÁÎÄ¼şÖĞ
+			file.writeToFile(wordsFrequency,count_char,count_words_num,count_rows,out_name,numbers);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
 	}
 	
 	

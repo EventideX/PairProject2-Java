@@ -13,67 +13,14 @@ import java.util.Map;
 
 public class lib {
 
-	/*
-	 * ½«Í³¼Æ½á¹ûÊä³öµ½ÎÄ¼þ"result.txt" ÊäÈë£ºÍ³¼ÆµÄÎÄ¼þ×Ö·û×ÜÊý¡¢Í³¼Æµ¥´ÊºÍ´ÊÆµµÄMap¡¢Í³¼ÆµÄÎÄ¼þÓÐÐ§ÐÐÊý Êä³ö£ºÎÞ
-	 */
-	public static void writeToFile( Map<String, String> wordsMap, int count_char, int count_words_num, int countLinnes, String output_file_path,int output_num) {
-		try {
-			File output_file = new File(output_file_path);
-			OutputStreamWriter writer;
-			writer = new OutputStreamWriter(new FileOutputStream(output_file));
-			BufferedWriter bufferedWriter = new BufferedWriter(writer);
-			bufferedWriter.write("characters: " + count_char + "\r\n");
-			bufferedWriter.write("words: " + count_words_num + "\r\n");
-			bufferedWriter.write("lines: " + countLinnes + "\r\n");
-			bufferedWriter.flush();
-
-			System.out.println("characters: " + count_char);
-			System.out.println("words: " + count_words_num);
-			System.out.println("lines: " + countLinnes);
-
-			if (count_words_num <= 0) {
-				writer.close();
-				return;
-			}
-
-			while (count_words_num > 0 && output_num-- > 0) {
-				String temp = "";
-				int maxNum = -1;
-				Iterator<Map.Entry<String, String>> iterator = wordsMap.entrySet().iterator();
-				while (iterator.hasNext()) {
-					Map.Entry<String, String> entry = iterator.next();
-					if (Integer.parseInt(entry.getValue()) >= maxNum && !entry.getKey().equals("count_words_num")) {
-						if (Integer.parseInt(entry.getValue()) == maxNum && entry.getKey().compareTo(temp) > 0) {// ÏàÍ¬ÆµÂÊµÄµ¥´ÊÑ¡×ÖµäÐò¿¿Ç°µÄµ¥´Ê
-							continue;
-						}
-						temp = entry.getKey();
-						maxNum = Integer.parseInt(entry.getValue());
-					}
-				}
-				bufferedWriter.write("<" + temp + ">: " + maxNum + "\r\n");
-				bufferedWriter.flush();
-				System.out.println("<" + temp + ">: " + maxNum);
-
-				wordsMap.remove(temp);
-				// count_words_num = count_words_num - maxNum;
-			}
-
-			writer.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	
 	/*
-	 * Í³¼ÆÎÄ¼þµÄÓÐÐ§ÐÐÊý°üº¬·Ç¿Õ°××Ö·ûµÄÐÐ£© ÊäÈë£ºÎÄ¼þÂ·¾¶ Êä³ö£ºÎÄ¼þµÄÓÐÐ§ÐÐÊý£¨°üº¬·Ç¿Õ°××Ö·ûµÄÐÐ£©
+	 * Í³ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¿Õ°ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ ï¿½ï¿½ï¿½ë£ºï¿½Ä¼ï¿½Â·ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¿Õ°ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ð£ï¿½
 	 */
 	public static int count_Lines(String file_path) {
 		try {
 			File input_file = new File(file_path);
-			if (input_file.isFile() && input_file.exists())// ÅÐ¶ÏÎÄ¼þÊÇ·ñ´æÔÚ
+			if (input_file.isFile() && input_file.exists())// ï¿½Ð¶ï¿½ï¿½Ä¼ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
 			{
 				InputStreamReader reader = new InputStreamReader(new FileInputStream(input_file));
 				BufferedReader bufferedReader = new BufferedReader(reader);
@@ -90,11 +37,11 @@ public class lib {
 				reader.close();
 				return countLinnes;
 			} else {
-				System.out.println("ÕÒ²»µ½Ö¸¶¨µÄÎÄ¼þ");
+				System.out.println("ï¿½Ò²ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½");
 				return -1;
 			}
 		} catch (IOException e) {
-			System.out.println("¶ÁÈ¡ÎÄ¼þÄÚÈÝ³ö´í");
+			System.out.println("ï¿½ï¿½È¡ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Ý³ï¿½ï¿½ï¿½");
 			e.printStackTrace();
 			return -1;
 		}
@@ -102,9 +49,9 @@ public class lib {
 
 
 	/*
-	 * Í³¼ÆÎÄ¼þÖÐµÄµ¥´Ê×ÜÊý 
-	 * ÊäÈë£ºÎÄ¼þÂ·¾¶ 
-	 * Êä³ö£ºÎÄ¼þÖÐµÄµ¥´Ê×ÜÊý
+	 * Í³ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ÐµÄµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+	 * ï¿½ï¿½ï¿½ë£ºï¿½Ä¼ï¿½Â·ï¿½ï¿½ 
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ÐµÄµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public static int get_Words_Num(String file_path) {
 		Map<String, String> wordsMap = lib.count_Words(file_path);
@@ -114,18 +61,18 @@ public class lib {
 
 	
 	/*
-	 * ´ÓÎÄ¼þÌáÈ¡µ¥´Ê²¢ÇÒÍ³¼Æµ¥´Ê³öÏÖ´ÎÊýºÍµ¥´Ê×ÜÊý·ÅÈëMap
-	 * ÊäÈë£ºÎÄ¼þÂ·¾¶ 
-	 * Êä³ö£º°üº­µ¥´Ê×ÜÊýºÍ¸÷¸öµ¥´Ê³öÏÖ´ÎÊýµÄMap
+	 * ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ê²ï¿½ï¿½ï¿½Í³ï¿½Æµï¿½ï¿½Ê³ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Map
+	 * ï¿½ï¿½ï¿½ë£ºï¿½Ä¼ï¿½Â·ï¿½ï¿½ 
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê³ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ï¿½ï¿½Map
 	 */
 	public static Map<String, String> count_Words(String file_path) {
 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("count_words_num", "0");// ¼ÇÂ¼µ¥´Ê×ÜÊý
+		map.put("count_words_num", "0");// ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 		try {
 			File input_file = new File(file_path);
-			if (input_file.isFile() && input_file.exists()) { // ÅÐ¶ÏÎÄ¼þÊÇ·ñ´æÔÚ
+			if (input_file.isFile() && input_file.exists()) { // ï¿½Ð¶ï¿½ï¿½Ä¼ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
 				InputStreamReader reader = new InputStreamReader(new FileInputStream(input_file));
 				BufferedReader bufferedReader = new BufferedReader(reader);
 				String str = null;
@@ -135,24 +82,24 @@ public class lib {
 					for (int i = 0; i < (str.length() - 3); i++) {
 						if (i > 0) {
 							if (('a' <= str.charAt(i - 1) && str.charAt(i - 1) <= 'z')
-									|| (48 <= str.charAt(i - 1) && str.charAt(i - 1) <= 57)) {// Èç¹ûÇ°Ò»¸ö×Ö·ûÊÇ×Ö·û»òÊý×Ö
+									|| (48 <= str.charAt(i - 1) && str.charAt(i - 1) <= 57)) {// ï¿½ï¿½ï¿½Ç°Ò»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 								continue;
 							}
 						}
 						if ('a' <= str.charAt(i) && str.charAt(i) <= 'z') {
 							if ('a' <= str.charAt(i + 1) && str.charAt(i + 1) <= 'z') {
 								if ('a' <= str.charAt(i + 2) && str.charAt(i + 2) <= 'z') {
-									if ('a' <= str.charAt(i + 3) && str.charAt(i + 3) <= 'z') {// ÕÒµ½µ¥´Ê
+									if ('a' <= str.charAt(i + 3) && str.charAt(i + 3) <= 'z') {// ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½
 										int j;
-										for (j = i + 4; j < str.length(); j++) {// ¿´µ¥´ÊÊÇ·ñ½áÊø
+										for (j = i + 4; j < str.length(); j++) {// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
 											if ('a' > str.charAt(j) || str.charAt(j) > 'z') {
-												if (48 > str.charAt(j) || str.charAt(j) > 57)// ²»ÊÇÊý×Ö
+												if (48 > str.charAt(j) || str.charAt(j) > 57)// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 													break;
 											}
 										}
-										String temp = str.substring(i, j);// ½ØÈ¡×Ö·û´®Ë÷ÒýºÅiµ½jÇøÓò£¨°üÀ¨i£¬²»°üÀ¨j£©
+										String temp = str.substring(i, j);// ï¿½ï¿½È¡ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½iï¿½ï¿½jï¿½ï¿½ï¿½ò£¨°ï¿½ï¿½ï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½jï¿½ï¿½
 										
-										// ¼Óµ½MapÀïÈ¥
+										// ï¿½Óµï¿½Mapï¿½ï¿½È¥
 										if (map.containsKey(temp)) {
 											int n = Integer.parseInt(map.get(temp));
 											n++;
@@ -161,7 +108,7 @@ public class lib {
 											map.put(temp, "1");
 
 										int n = Integer.parseInt(map.get("count_words_num"));
-										n++;// ×Üµ¥´Ê¸öÊý¼ÓÒ»
+										n++;// ï¿½Üµï¿½ï¿½Ê¸ï¿½ï¿½ï¿½ï¿½ï¿½Ò»
 										map.put("count_words_num", n + "");
 
 										i = j;
@@ -179,11 +126,11 @@ public class lib {
 				return map;
 
 			} else {
-				System.out.println("ÕÒ²»µ½Ö¸¶¨µÄÎÄ¼þ");
+				System.out.println("ï¿½Ò²ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½");
 				return null;
 			}
 		} catch (IOException e) {
-			System.out.println("¶ÁÈ¡ÎÄ¼þÄÚÈÝ³ö´í");
+			System.out.println("ï¿½ï¿½È¡ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Ý³ï¿½ï¿½ï¿½");
 			e.printStackTrace();
 			return null;
 		}
@@ -191,14 +138,14 @@ public class lib {
 
 	
 	/*
-	 * Í³¼ÆÎÄ¼þ×ÜµÄ×Ö·ûÊý 
-	 * ÊäÈë£ºÎÄ¼þÂ·¾¶ 
-	 * Êä³ö£ºÎÄ¼þµÄ×Ö·ûÊý£¨°üÀ¨¿Õ°××Ö·û£©
+	 * Í³ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Üµï¿½ï¿½Ö·ï¿½ï¿½ï¿½ 
+	 * ï¿½ï¿½ï¿½ë£ºï¿½Ä¼ï¿½Â·ï¿½ï¿½ 
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ°ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
 	 */
 	public static int count_Characters(String file_path) {
 		try {
 			File input_file = new File(file_path);
-			if (input_file.isFile() && input_file.exists()) { // ÅÐ¶ÏÎÄ¼þÊÇ·ñ´æÔÚ
+			if (input_file.isFile() && input_file.exists()) { // ï¿½Ð¶ï¿½ï¿½Ä¼ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
 				InputStreamReader reader = new InputStreamReader(new FileInputStream(input_file));
 				int count_char = 0;
 				int temp;
@@ -214,11 +161,11 @@ public class lib {
 				reader.close();
 				return count_char;
 			} else {
-				System.out.println("ÕÒ²»µ½Ö¸¶¨µÄÎÄ¼þ");
+				System.out.println("ï¿½Ò²ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½");
 				return -1;
 			}
 		} catch (Exception e) {
-			System.out.println("¶ÁÈ¡ÎÄ¼þÄÚÈÝ³ö´í");
+			System.out.println("ï¿½ï¿½È¡ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Ý³ï¿½ï¿½ï¿½");
 			e.printStackTrace();
 			return -1;
 		}
@@ -227,28 +174,28 @@ public class lib {
 
 	
 	/*
-	 * ´ÓÎÄ¼þÌáÈ¡m¸öµ¥´Ê¹¹³ÉµÄ´Ê×é²¢ÇÒÍ³¼Æ´Ê×é¼°´Ê×éµÄÈ¨ÖØ´ÊÆµ 
-	 * ÊäÈë£ºÎÄ¼þÂ·¾¶£¬Ò»¸ö´Ê×éµÄµ¥´ÊÊý£¬ÊÇ·ñ°´10:1µÄÈ¨ÖØÍ³¼Æ´ÊÆµµÄbooleanÖµ
-	 * Êä³ö£º°üº­´Ê×é×ÜÊýºÍ¸÷¸ö´Ê×é´ÊÆµµÄMap
+	 * ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½È¡mï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ÉµÄ´ï¿½ï¿½é²¢ï¿½ï¿½Í³ï¿½Æ´ï¿½ï¿½é¼°ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½Ø´ï¿½Æµ 
+	 * ï¿½ï¿½ï¿½ë£ºï¿½Ä¼ï¿½Â·ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½10:1ï¿½ï¿½È¨ï¿½ï¿½Í³ï¿½Æ´ï¿½Æµï¿½ï¿½booleanÖµ
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½Map
 	 */
 	public static Map<String, String> count_Phrase_frequency(String file_path, int phraseLength, boolean is_weight) {
 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("count_words_num", "0");// ×¢Òâ£¡£¡wordsMapÖÐ¼ÓÈëÁËÒ»¸ö¡°count_words_num¡±µÄ¼üÓÃÓÚÍ³¼Æ´Ê×é×ÜÊý£¨²»ÊÇÖÖÊýÅ¶£©
+		map.put("count_words_num", "0");// ×¢ï¿½â£¡ï¿½ï¿½wordsMapï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½count_words_numï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Í³ï¿½Æ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¶ï¿½ï¿½
 
 		try {
 			File input_file = new File(file_path);
-			if (input_file.isFile() && input_file.exists()) { // ÅÐ¶ÏÎÄ¼þÊÇ·ñ´æÔÚ
+			if (input_file.isFile() && input_file.exists()) { // ï¿½Ð¶ï¿½ï¿½Ä¼ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
 				InputStreamReader reader = new InputStreamReader(new FileInputStream(input_file));
 				BufferedReader bufferedReader = new BufferedReader(reader);
 				String str = null;
 				boolean is_title = false;
 
 				while ((str = bufferedReader.readLine()) != null) {
-					str = clear_String(str);
+					str = file.clear_String(str);
 					str = str.toLowerCase();
 
-					// È¥µô"title: "ºÍ"abstract: "
+					// È¥ï¿½ï¿½"title: "ï¿½ï¿½"abstract: "
 					if (str.contains("title: ")) {
 						is_title = true;
 						str = str.substring(0, str.indexOf("title: ")) + str.substring(str.indexOf("title: ") + 7);
@@ -257,33 +204,33 @@ public class lib {
 					if (str.contains("abstract: "))
 						str = str.substring(0, str.indexOf("abstract: ")) + str.substring(str.indexOf("abstract: ") + 10);
 
-					int count = 0;// ¼ÆËãÁ¬Ðø³öÏÖµÄµ¥´ÊÊý
-					String[] words = new String[101];// ´æ´¢Á¬Ðø³öÏÖµÄµ¥´Ê
+					int count = 0;// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÖµÄµï¿½ï¿½ï¿½ï¿½ï¿½
+					String[] words = new String[101];// ï¿½æ´¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÖµÄµï¿½ï¿½ï¿½
 
 					for (int i = 0; i < (str.length() - 3); i++) {
 						if (i > 0) {
 							if (('a' <= str.charAt(i - 1) && str.charAt(i - 1) <= 'z')
-									|| (48 <= str.charAt(i - 1) && str.charAt(i - 1) <= 57)) {// Èç¹ûÇ°Ò»¸ö×Ö·ûÊÇ×Ö·û»òÊý×Ö
+									|| (48 <= str.charAt(i - 1) && str.charAt(i - 1) <= 57)) {// ï¿½ï¿½ï¿½Ç°Ò»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 								continue;
 							}
 						}
 						if ('a' <= str.charAt(i) && str.charAt(i) <= 'z') {
 							if ('a' <= str.charAt(i + 1) && str.charAt(i + 1) <= 'z') {
 								if ('a' <= str.charAt(i + 2) && str.charAt(i + 2) <= 'z') {
-									if ('a' <= str.charAt(i + 3) && str.charAt(i + 3) <= 'z') {// ÕÒµ½Ò»¸öµ¥´Ê
+									if ('a' <= str.charAt(i + 3) && str.charAt(i + 3) <= 'z') {// ï¿½Òµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 										int j;
-										for (j = i + 4; j < str.length(); j++) {// ¿´µ¥´ÊÊÇ·ñ½áÊø
+										for (j = i + 4; j < str.length(); j++) {// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
 											if ('a' > str.charAt(j) || str.charAt(j) > 'z') {
-												if (48 > str.charAt(j) || str.charAt(j) > 57)// ²»ÊÇÊý×Ö£¬Óöµ½·Ö¸ô·û
+												if (48 > str.charAt(j) || str.charAt(j) > 57)// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½
 													break;
 											}
 										}
-										String temp = str.substring(i, j);// ½ØÈ¡×Ö·û´®Ë÷ÒýºÅiµ½jÇøÓò£¨°üÀ¨i£¬²»°üÀ¨j+1£©---½ØÈ¡µ¥´Ê
-										if (j == str.length())// Ò»¶ÎÖÐÒÔµ¥´Ê½áÎ²
+										String temp = str.substring(i, j);// ï¿½ï¿½È¡ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½iï¿½ï¿½jï¿½ï¿½ï¿½ò£¨°ï¿½ï¿½ï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½j+1ï¿½ï¿½---ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+										if (j == str.length())// Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ôµï¿½ï¿½Ê½ï¿½Î²
 											temp = temp + " ";
 										else
-											temp = temp + str.charAt(j);// °Ñµ¥´ÊºóÃæµÄÒ»¸ö·Ö¸ô·û¼Óµ½µ¥´ÊÖÐÈ¥
+											temp = temp + str.charAt(j);// ï¿½Ñµï¿½ï¿½Êºï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¥
 										count++;
 										words[count] = temp;
 										if (count >= phraseLength) {
@@ -291,10 +238,10 @@ public class lib {
 											for (int k = phraseLength; k > 1; k--) {
 												temp = temp + words[count - k + 2];
 											}
-											temp = temp.substring(0, temp.length() - 1);// ºÍ²¢ºóÈ¥µôÄ©Î²µÄ·Ö¸î·û
+											temp = temp.substring(0, temp.length() - 1);// ï¿½Í²ï¿½ï¿½ï¿½È¥ï¿½ï¿½Ä©Î²ï¿½Ä·Ö¸ï¿½ï¿½
 
-											// ¼Óµ½MapÀïÈ¥
-											if (is_weight && is_title)// ¼ÆËãÈ¨ÖµÎª10:1,²¢ÇÒ¸Ã´Ê×éÔÚtitle¶ÎÖÐ
+											// ï¿½Óµï¿½Mapï¿½ï¿½È¥
+											if (is_weight && is_title)// ï¿½ï¿½ï¿½ï¿½È¨ÖµÎª10:1,ï¿½ï¿½ï¿½Ò¸Ã´ï¿½ï¿½ï¿½ï¿½ï¿½titleï¿½ï¿½ï¿½ï¿½
 											{
 												if (map.containsKey(temp)) {
 													int n = Integer.parseInt(map.get(temp));
@@ -303,7 +250,7 @@ public class lib {
 												} else
 													map.put(temp, "10");
 											} else {
-												// ²»ÐèÒª¼ÆËãÈ¨Öµ
+												// ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½È¨Öµ
 												if (map.containsKey(temp)) {
 													int n = Integer.parseInt(map.get(temp));
 													n++;
@@ -313,27 +260,27 @@ public class lib {
 											}
 
 											int n = Integer.parseInt(map.get("count_words_num"));
-											n++;// ×Ü´Ê×é¸öÊý¼ÓÒ»
+											n++;// ï¿½Ü´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»
 											map.put("count_words_num", n + "");
 										}
 										i = j;
 									} else {
 										count = 0;
 										i = i + 3;
-									} // Óöµ½ÉÙÓÚ4¸ö×ÖÄ¸µÄµ¥´Ê£¬½áÊøcount
+									} // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½4ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½Äµï¿½ï¿½Ê£ï¿½ï¿½ï¿½ï¿½ï¿½count
 								} else {
 									count = 0;
 									i = i + 2;
-								} // Óöµ½ÉÙÓÚ4¸ö×ÖÄ¸µÄµ¥´Ê£¬½áÊøcount
+								} // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½4ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½Äµï¿½ï¿½Ê£ï¿½ï¿½ï¿½ï¿½ï¿½count
 							} else {
 								count = 0;
 								i = i + 1;
-							} // Óöµ½ÉÙÓÚ4¸ö×ÖÄ¸µÄµ¥´Ê£¬½áÊøcount
+							} // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½4ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½Äµï¿½ï¿½Ê£ï¿½ï¿½ï¿½ï¿½ï¿½count
 						} else {
-							if ((48 > str.charAt(i) || str.charAt(i) > 57)) {// Óöµ½·Ö¸ô·û¼Óµ½¼Óµ½ÉÏÒ»¸öµ¥´ÊÄ©Î²
+							if ((48 > str.charAt(i) || str.charAt(i) > 57)) {// ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½Óµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä©Î²
 								words[count] += str.charAt(i);
 							} else {
-								// Óöµ½Êý×Ö£¬½áÊøcount
+								// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½count
 								count = 0;
 							}
 						}
@@ -344,11 +291,11 @@ public class lib {
 				return map;
 
 			} else {
-				System.out.println("ÕÒ²»µ½Ö¸¶¨µÄÎÄ¼þ");
+				System.out.println("ï¿½Ò²ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½");
 				return null;
 			}
 		} catch (IOException e) {
-			System.out.println("¶ÁÈ¡ÎÄ¼þÄÚÈÝ³ö´í");
+			System.out.println("ï¿½ï¿½È¡ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Ý³ï¿½ï¿½ï¿½");
 			e.printStackTrace();
 			return null;
 		}
@@ -356,21 +303,21 @@ public class lib {
 
 	
 	/*
-	 * °´È¨ÖØÍ³¼ÆÎÄ¼þµÄµ¥´Ê´ÊÆµ(0±íÊ¾ÊôÓÚ Title¡¢Abstract µÄµ¥´ÊÈ¨ÖØÏàÍ¬¾ùÎª 1; 1 ±íÊ¾ÊôÓÚTitleµÄµ¥´ÊÈ¨ÖØÎª10£¬ÊôÓÚAbstract µ¥´ÊÈ¨ÖØÎª1) 
-	 * ÊäÈë£ºÎÄ¼þÂ·¾¶¡¢³õ²½Í³¼ÆµÄµ¥´ÊºÍ´ÊÆµµÄMap¡¢ÊÇ·ñÊ¹ÓÃ°´10:1µÄÈ¨ÖØµÄboolean
-	 * Êä³ö£º°´È¨ÖØÍ³¼ÆµÄµ¥´ÊºÍ´ÊÆµµÄMap
+	 * ï¿½ï¿½È¨ï¿½ï¿½Í³ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Äµï¿½ï¿½Ê´ï¿½Æµ(0ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ Titleï¿½ï¿½Abstract ï¿½Äµï¿½ï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½Îª 1; 1 ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Titleï¿½Äµï¿½ï¿½ï¿½È¨ï¿½ï¿½Îª10ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Abstract ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½Îª1) 
+	 * ï¿½ï¿½ï¿½ë£ºï¿½Ä¼ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í³ï¿½ÆµÄµï¿½ï¿½ÊºÍ´ï¿½Æµï¿½ï¿½Mapï¿½ï¿½ï¿½Ç·ï¿½Ê¹ï¿½Ã°ï¿½10:1ï¿½ï¿½È¨ï¿½Øµï¿½boolean
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½Í³ï¿½ÆµÄµï¿½ï¿½ÊºÍ´ï¿½Æµï¿½ï¿½Map
 	 */
 	public static Map<String, String> count_Word_Frequency(String input_file_path, Map<String, String> wordsMap,boolean is_weight) {
 
 		try {
 			File input_file = new File(input_file_path);
-			if (input_file.isFile() && input_file.exists())// ÅÐ¶ÏÎÄ¼þÊÇ·ñ´æÔÚ
+			if (input_file.isFile() && input_file.exists())// ï¿½Ð¶ï¿½ï¿½Ä¼ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
 			{
 				if (!is_weight) {
-					// È¨ÖØ1:1
+					// È¨ï¿½ï¿½1:1
 					return wordsMap;
 				} else if (is_weight) {
-					// È¨ÖØ10:1
+					// È¨ï¿½ï¿½10:1
 					InputStreamReader reader;
 					BufferedReader bufferedReader;
 					String str = null; 
@@ -382,25 +329,25 @@ public class lib {
 						if (str.contains("title: ")) {
 							for (int i = 5; i < (str.length() - 3); i++) {
 								if (('a' <= str.charAt(i - 1) && str.charAt(i - 1) <= 'z')
-										|| (48 <= str.charAt(i - 1) && str.charAt(i - 1) <= 57)) {// Èç¹ûÇ°Ò»¸ö×Ö·ûÊÇ×Ö·û»òÊý×Ö
+										|| (48 <= str.charAt(i - 1) && str.charAt(i - 1) <= 57)) {// ï¿½ï¿½ï¿½Ç°Ò»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 									continue;
 								}
 								if ('a' <= str.charAt(i) && str.charAt(i) <= 'z') {
 									if ('a' <= str.charAt(i + 1) && str.charAt(i + 1) <= 'z') {
 										if ('a' <= str.charAt(i + 2) && str.charAt(i + 2) <= 'z') {
 											if ('a' <= str.charAt(i + 3) && str.charAt(i + 3) <= 'z') {
-												// ÕÒµ½µ¥´Ê
+												// ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½
 												int j;
 												for (j = i + 4; j < str.length(); j++) {
-													// ¿´µ¥´ÊÊÇ·ñ½áÊø
+													// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
 													if ('a' > str.charAt(j) || str.charAt(j) > 'z') {
 														if (48 > str.charAt(j) || str.charAt(j) > 57)
-															// ²»ÊÇ×Ö·û»òÊý×Ö£¬µ¥´Ê½áÊø
+															// ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½
 															break;
 													}
 												}
-												String temp = str.substring(i, j);// ½ØÈ¡×Ö·û´®Ë÷ÒýºÅiµ½jÇøÓò£¨°üÀ¨i£¬²»°üÀ¨j£©
-												// ´ÊÆµ¼Ó9
+												String temp = str.substring(i, j);// ï¿½ï¿½È¡ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½iï¿½ï¿½jï¿½ï¿½ï¿½ò£¨°ï¿½ï¿½ï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½jï¿½ï¿½
+												// ï¿½ï¿½Æµï¿½ï¿½9
 												if (wordsMap.containsKey(temp)) {
 													int n = Integer.parseInt(wordsMap.get(temp));
 													n += 9;
@@ -420,102 +367,20 @@ public class lib {
 					reader.close();
 					return wordsMap;
 				} else {
-					System.out.println("ÃüÁî´íÎó£¡£¡");
+					System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ó£¡£ï¿½");
 					return null;
 				}
 			} else {
-				System.out.println("ÕÒ²»µ½Ö¸¶¨µÄÎÄ¼þ");
+				System.out.println("ï¿½Ò²ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½");
 				return null;
 			}
 		} catch (IOException e) {
-			System.out.println("¶ÁÈ¡ÎÄ¼þÄÚÈÝ³ö´í");
+			System.out.println("ï¿½ï¿½È¡ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Ý³ï¿½ï¿½ï¿½");
 			e.printStackTrace();
 			return null;
 		}
 	}
 	
-	
-	/*
-	 * È¥µôÂÛÎÄÅÀÈ¡½á¹ûÎÄ¼þÖÐµÄ¡°Title: ¡±¡¢¡°Abstract: ¡±¡¢ÂÛÎÄ±àºÅ¼°Æä½ô¸ú×ÅµÄ»»ÐÐ·ûÒÔ¼°·Ö¸ôÂÛÎÄµÄÁ½¸ö»»ÐÐ·û²¢Ð´ÈëÒ»¸öÐÂÎÄ¼þ¡°new_Txt.txt¡±
-	 * ÊäÈë£ºÎÄ¼þÂ·¾¶
-	 * Êä³ö£ºÐÞ¸ÄºóµÄÎÄ¼þµÄÎÄ¼þÂ·¾¶
-	 */
-	public static String rewrite_Txt(String file_path)
-	{
-		try {
-			File input_file = new File(file_path);
-			File output_file = new File("new_Txt.txt");
-			if (input_file.isFile() && input_file.exists()) { // ÅÐ¶ÏÎÄ¼þÊÇ·ñ´æÔÚ
-				InputStreamReader reader = new InputStreamReader(new FileInputStream(input_file));
-				OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(output_file));
-				BufferedReader bufferedReader = new BufferedReader(reader);
-				BufferedWriter bufferedWriter = new BufferedWriter(writer);
-				
-				String str = null;
-				while ((str = bufferedReader.readLine()) != null) {
-					
-					//ÅÐ¶Ï¸Ã¶ÎÊÇ·ñÎªÂÛÎÄÐòºÅ
-					boolean is_Num = true;
-					for(int i = 0;i < str.length() ; i++){
-						int chr=str.charAt(i);
-						if(chr<48 || chr>57) {
-							is_Num = false;
-							break;
-						}
-					}
-					if( is_Num || str.equals(""))
-						continue;
-					// È¥µô·ÇAsciiÂëµÄ×Ö·û
-					str = clear_String(str);
-					// È¥µô"title: "ºÍ"abstract: "
-					if (str.contains("Title: ")) {
-						str = str.substring(0, str.indexOf("Title: ")) + str.substring(str.indexOf("Title: ") + 7);
-						bufferedWriter.write(str+"\r\n");
-						bufferedWriter.flush();
-						continue;
-					} 
-					if (str.contains("Abstract: ")) {
-						str = str.substring(0, str.indexOf("Abstract: ")) + str.substring(str.indexOf("Abstract: ") + 10);
-						bufferedWriter.write(str+"\r\n");
-						bufferedWriter.flush();
-						continue;
-					}
-					bufferedWriter.write(str+"\r\n");
-					bufferedWriter.flush();
-					
-				}
-				
-				reader.close();
-				writer.close();
-				return "new_Txt.txt";
-			} else {
-				System.out.println("ÕÒ²»µ½Ö¸¶¨µÄÎÄ¼þ");
-				return null;
-			}
-		} catch (Exception e) {
-			System.out.println("¶ÁÈ¡ÎÄ¼þÄÚÈÝ³ö´í");
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	
-	/*
-	 * È¥³ý×Ö·û´®ÖÐµÄ·ÇASCIIÂë
-	 * ÊäÈë£º×Ö·û´®
-	 * Êä³ö£ºÈ¥³ý·ÇASCIIÂëµÄ×Ö·û´®
-	 */
-	public static String clear_String(String str)
-	{
-		String new_str = "";
-		for( int i = 0 ; i < str.length() ; i++ )
-		{
-			if( str.charAt(i) <= 127 )
-				new_str +=str.charAt(i);
-		}
-		
-		return new_str;
-	}
 
 }
 
