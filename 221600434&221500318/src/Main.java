@@ -62,7 +62,51 @@ public class Main {
 				System.out.print("必须有-i -o -w选项和参数");
 			}
 	}
-	
+/*	
+	//统计单词词组
+	public static void countWordGroups(String content, int weight){
+	StringBuffer sbf = new StringBuffer();
+	int size = content.length();
+	char []arr = content.toCharArray();
+	for (int i = 0; i < size; i++) {//去除分隔符整合所有字符
+	char val = arr[i];
+	if(48<=val && val<=57){
+	sbf.append(val);
+	}else if(97<=val && val<=122){
+	sbf.append(val);
+	}
+	}
+	allText = sbf.toString();
+	Pattern expression = Pattern.compile("[a-z]{4,}[a-z0-9]*");
+	String str = content;
+	Matcher matcher = expression.matcher(str);
+	String word;
+	ArrayList group = new ArrayList<>();
+	while (matcher.find()) { //提取单词
+	word = matcher.group();
+	group.add(word);
+	}
+	int len = group.size();
+	for (int i = 0; i <= len-m; i++) {
+	String pr = "";
+	String pr2 = "";
+	for (int j = i; j < i+m; j++) {//将m个单词构成字符串
+	pr += group.get(j);
+	pr2 += group.get(j);
+	if(j < (i+m)-1){
+	pr2 +=" ";
+	}
+	}
+	if(allText.indexOf(pr)!=-1){//在allText中匹配子字符串
+	if (records2.containsKey(pr2)) {
+	records2.put(pr2, records2.get(pr2) + weight);
+	} else {
+	records2.put(pr2, weight);
+	}
+	}
+	}
+	}
+*/	
 	public static boolean isNumeric(String str){ 
 		Pattern pattern = Pattern.compile("[0-9]*"); 
 		return pattern.matcher(str).matches(); 
@@ -148,6 +192,7 @@ public class Main {
 		char[] charArray = null;
 		int value = -1;
 		while ((line  = br.readLine()) != null) {
+			num++;//readLine()漏掉的换行符也统计在内
 			line = line.replaceAll(separator, ""); // 过滤Title: 和 Abstract:
 			m = p.matcher(line);
 			if (line.trim().length() != 0 && !m.matches()) {
