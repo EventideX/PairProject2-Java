@@ -30,6 +30,8 @@ public class file {
 				
 				String str = null;
 				while ((str = bufferedReader.readLine()) != null) {
+					// 去掉非Ascii码的字符
+					str = clear_String(str);
 					
 					//判断该段是否为论文序号
 					boolean is_Num = true;
@@ -42,8 +44,7 @@ public class file {
 					}
 					if( is_Num || str.equals(""))
 						continue;
-					// 去掉非Ascii码的字符
-					str = clear_String(str);
+					
 					// 去掉"title: "和"abstract: "
 					if (str.contains("Title: ")) {
 						str = str.substring(0, str.indexOf("Title: ")) + str.substring(str.indexOf("Title: ") + 7);
