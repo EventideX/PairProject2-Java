@@ -15,7 +15,6 @@ public class Main {
 					String fin = ch[i].substring(1, ch[i].length()).trim();
 					b.setFileInput(fin);
 					//System.out.println(fin);
-					b.setWord();
 					break;
 				}
 				case 'o'|'O' : {
@@ -44,6 +43,7 @@ public class Main {
 				}
 			}
 		}
+		b.setWord();
 		b.getWord();
 		in.close();
 		} catch (NumberFormatException e) {	

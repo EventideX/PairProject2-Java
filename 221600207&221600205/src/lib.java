@@ -7,8 +7,9 @@ public class lib {
 	private int fByteCount = 0;//字节数
 	private int maxWordNum = 10;//词频输出数
 	private String fileInput= "cvpr/result.txt";
-	private String fileOutput= "src/output.txt";
+	private String fileOutput= "output.txt";
 	private boolean wValue = false;//-w 值
+	private int mValue = 1;//-m 值
 	private HashMap<String,Integer> map = new HashMap<String,Integer>();//存放字词处
 	
 	
@@ -32,6 +33,10 @@ public class lib {
 	public void setWValue(int num)
 	{
 		wValue = num > 0 ? true : false;
+	}
+	public void setMValue(int num)
+	{
+		mValue = num;
 	}
 	public void setMaxWordNum(int num)
 	{
@@ -87,7 +92,6 @@ public class lib {
 	public void getWord()
 	{
 		LinkedHashMap<String,Integer> list  = sortMap(maxWordNum);
-		
 		try {
 			FileOutputStream fos = new FileOutputStream(fileOutput);
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
@@ -135,6 +139,53 @@ public class lib {
 			}
 		}
 	}
+	public void setMapPro(String fContent,boolean isTitle)
+	{
+		fContent = fContent.toLowerCase();
+		String [] ch = fContent.split("\\W+");
+		int [] a = new int[ch.length+1];
+		a[0] = a[1] = 0;//a[0]=0方便迭代 a[1]=0防止没有单词
+		/*记录单词出现的下标，坏单词置-1*/
+		for(int i = 0; i < ch.length ;i++) {
+			a[i+1] = fContent.indexOf(ch[i], a[i]);
+			if(ch[i].length() >= 4 && isLower(ch[i].charAt(0)) && isLower(ch[i].charAt(1)) && isLower(ch[i].charAt(2)) && isLower(ch[i].charAt(3)) ) {
+				fWordCount ++;
+				a[i] = -1;
+			}
+		}
+
+		boolean isGoodMove = false;//是否 良好移动=begin++,end++
+		for(int begin = 1,end = 1; end <= ch.length ;begin++,end++) {
+			if( ! isGoodMove ) {	
+				int j;
+				for( j = 1;j <= mValue; j++,end++) {
+					if(end > ch.length || a[end] == -1)	break;//遍历完或者遇到坏单词
+				}
+				if(j > mValue) { //中间没有遇到坏单词
+					end = begin + mValue - 1;//找到尾坐标
+					isGoodMove = true;//开始良好的移动 
+				}
+				else {//中间遇到坏单词
+					begin = end ;//开始和结束下标转移至坏单词的下一个单词，保存坏移动不变
+				}
+			}
+			else { //良好的移动
+				if(a[end] == -1) { //遇到坏单词
+					begin = end;//开始和结束下标转移至坏单词的下一个单词，修改为坏移动
+					isGoodMove = false;//开始坏的移动 
+				}
+			}
+			if( isGoodMove ) { //只有良好的移动才允许记录
+				String sh = fContent.substring(a[begin], a[end]+ch[end-1].length()+1);
+				//System.out.print(sh);
+				//新增纪录或者记录数+1
+				if( map.containsKey(sh) )
+					map.put(sh,(wValue & isTitle) ? map.get(sh)+10 : map.get(sh)+1);
+				else 
+					map.put(sh, (wValue & isTitle) ? 10 : 1);
+			}
+		}
+	}
 	public void setWord()
 	{
 		try {
@@ -149,15 +200,21 @@ public class lib {
 					fRowCount ++;
 					if(fContent.charAt(0) == 'T')
 					{
-						fContent = fContent.substring(6, fContent.length()-1 );//remove(Title：) 
-						fByteCount += fContent.length();//无换行
-						setMap(fContent,true);
+						fContent = fContent.substring(7, fContent.length()-1 );//remove(Title：) 
+						fByteCount += fContent.length()+1;//换行+1
+						if(mValue >= 1 )
+							setMap(fContent,true); 
+						else 
+							setMapPro(fContent,true);
 					}
 					else if(fContent.charAt(0) == 'A')
 					{
 						fContent = fContent.substring(9, fContent.length()-1 );//remove(Abstract: ) 
-						fByteCount += fContent.length();//无换行
-						setMap(fContent,false);
+						fByteCount += fContent.length()+1;//换行+1
+						if(mValue >= 1 )
+							setMap(fContent,true); 
+						else 
+							setMapPro(fContent,true);
 					}
 				}
 			}
