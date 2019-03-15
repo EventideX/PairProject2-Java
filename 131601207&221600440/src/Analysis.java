@@ -39,10 +39,15 @@ public class Analysis {
 				outputFilePath = args[i + 1];
 			else if (args[i].equals("-w"))
 				weight = Integer.parseInt(args[i + 1]);
-			else if (args[i].equals("-m"))
-				phraseSize = Integer.parseInt(args[i + 1]);
+			else if (args[i].equals("-m")) {
+				if(Integer.parseInt(args[i+1])>=0)
+					phraseSize = Integer.parseInt(args[i + 1]);
+				else System.out.println("-m参数应为自然数，默认进行单词统计");
+			}
 			else if (args[i].equals("-n"))
-				resultCnt = Integer.parseInt(args[i + 1]);
+				if(Integer.parseInt(args[i+1])>=0) 
+					resultCnt = Integer.parseInt(args[i + 1]);
+				else System.out.println("-n参数应为自然数，默认输出前十位数据");
 		}
 	}
 }
