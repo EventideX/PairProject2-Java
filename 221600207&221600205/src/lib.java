@@ -42,9 +42,17 @@ public class lib {
 	{
 		if(num >= 0)	maxWordNum = num;
 	}
+	public boolean getWValue()
+	{
+		return wValue;
+	}
 	public int getFWordCount()
 	{
 		return fWordCount;
+	}
+	public int getMValue()
+	{
+		return mValue;
 	}
 	public int getFRowCount()
 	{
@@ -61,6 +69,14 @@ public class lib {
 	public int getMaxWordNum(int num)
 	{
 		return maxWordNum = num;
+	}
+	public String getFileInput()
+	{
+		return fileInput;
+	}
+	public String getFileOutput()
+	{
+		return fileOutput;
 	}
 	public boolean isLower(char c)
 	{
