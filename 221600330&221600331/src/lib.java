@@ -191,7 +191,7 @@ public class lib {
 				boolean is_title = false;
 
 				while ((str = bufferedReader.readLine()) != null) {
-					str = clear_String(str);
+					str = file.clear_String(str);
 					str = str.toLowerCase();
 
 					// 去掉"title: "和"abstract: "
