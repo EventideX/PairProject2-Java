@@ -165,9 +165,9 @@ public class lib {
             }
             else a[i+1] = -1;
         }
-        for(int i = 0; i < ch.length ;i++) { 
-            System.out.print(a[i]+" ");
-        }
+        //for(int i = 0; i < ch.length ;i++) { 
+        //    System.out.print(a[i]+" ");
+        //}
         boolean isGoodMove = false;//是否 良好移动=begin++,end++
         for(int begin = 1,end = 1; end <= ch.length ;begin++,end++) {
             if( ! isGoodMove ) {    
